@@ -14,10 +14,5 @@ def dashboard():
     return render_template('index.html')
 
 
-@app.route('/teste')
-def teste():
-    pass   
-
-
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)
