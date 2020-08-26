@@ -20,7 +20,7 @@ class Usuario(Base, UserMixin):
     login = Column(String(20), unique=True, nullable=False)
     senha = Column(String(10), nullable=False)
     id_permissao = Column(Integer, ForeignKey('TPermissao.id_permissao'))
-    role = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
+    permissao = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
 
     def __init__(self, nome, sobrenome, email, login, senha):
         self.nome = nome
@@ -34,6 +34,7 @@ class Usuario(Base, UserMixin):
     # -------------------------------------------------------------------------------------
     # @autor: Luciano Gomes Vieira dos Anjos
     # @data: 26/08/2020
+    # @versao: 1.0.0
 
     @property
     def is_authenticated(self):
@@ -46,12 +47,15 @@ class Usuario(Base, UserMixin):
     @property
     def is_anonymous(self):
         return False
+    
+    def get_id(self):
+        return str(self.id_usuario)
 
 
 class Permissao(Base):
     '''
 
-    CLASSE PERMISSAO - MAPEIA TABELA TPermissao NO BANCO DE DADOS 
+    CLASSE PERMISSAO - MAPEIA TABELA TPermissao NO BANCO DE DADOS
   
     @autor: Luciano Gomes Vieira dos Anjos -
     @data: 26/08/2020 -
