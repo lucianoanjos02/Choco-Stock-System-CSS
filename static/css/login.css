@@ -1,0 +1,17 @@
+.form-signin {
+    width: 35%;
+    margin-left: 33%; 
+    margin-top: 20%;
+}
+
+.form-signin-heading {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+    font-size: 8ch;
+    margin-left: 34%;
+    margin-right: 34%;
+}
+
+.page-footer {
+    margin-top: 18%;
+}
