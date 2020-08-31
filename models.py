@@ -1,7 +1,7 @@
 from database import Base
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, Date, ForeignKey
 
 class Usuario(Base, UserMixin):
     '''
@@ -64,3 +64,77 @@ class Permissao(Base):
     def __init__(self, nome):
         self.nome = nome
 
+
+class Loja(Base):
+    '''
+
+    CLASSE LOJA - MAPEIA TABELA Tloja NO BANCO DE DADOS
+
+    '''    
+    __tablename__ = 'TLoja'
+    id_loja = Column(Integer, primary_key=True, autoincrement=True)
+    razao_social = Column(String(100), nullable=False, unique=True)
+    nome_fantasia = Column(String(100), nullable=False, unique=True)
+    cnpj = Column(String(11), nullable=False, unique=True)
+    endereco = Column(String(100), nullable=False)
+    inscricao_estadual = Column(String(20), nullable=False, unique=True)
+    email = Column(String(50), nullable=False, unique=True)
+    id_usuario = Column(Integer, ForeignKey('TUsuraio.id_usuario'))
+
+
+class Estoque(Base):
+    '''
+
+    CLASSE ESTOQUE - MAPEIA TABELA TEstoque NO BANCO DE DADOS
+
+    '''
+    __tablename__ = 'TEstoque'
+    id_estoque = Column(Integer, primary_key=True, autoincrement=True)
+    numero_lote = Column(String(10), nullable=False)
+    quantidade = Column(Integer, nullable=False)
+    data_fabricacao = Column(Date, nullable=False)
+    data_validade = Column(Date, nullable=False)
+    total_item = Column(Integer, nullable=False)
+    id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
+    
+
+class Produto(Base):
+    '''
+
+    CLASSE PRODUTO - MAPEIA TABELA TProduto NO BANCO DE DADOS
+
+    '''
+    __tablename__ = 'TProduto'
+    id_produto = Column(Integer, primary_key=True, autoincrement=True)
+    codigo_barras = Column(String(100), nullable=False)
+    nome_produto = Column(String(100), nullable=False)
+    preco_produto = Column(Integer, nullable=False)
+    id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
+    id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
+
+
+class Tipo_Produto(Base):
+    '''
+
+    CLASSE TIPO_PRODUTO - MAPEIA TABELA TTp_Produto NO BANCO DE DADOS
+
+    '''
+    __tablename__ = 'TTp_Produto'
+    id_tp_produto = Column(Integer, primary_key=True, autoincrement=True)
+    nome_tp_produto = Column(String(100), nullable=False)
+    id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    
+
+class Kit(Base):
+    '''
+
+    CLASSE KIT - MAPEIA TABELA Kit NO BANCO DE DADOS
+
+    '''
+    __tablename__ = 'TKit'
+    id_kit = Column(Integer, primary_key=True, autoincrement=True)
+    nome_kit = Column(String(100), nullable=False)
+    qtd_kit = Column(Integer, nullable=False)
+    preco_kit = Column(Integer, nullable=False)
+    validade_kit = Column(Date, nullable=False)
+    id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
