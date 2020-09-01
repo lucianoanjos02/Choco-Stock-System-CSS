@@ -61,8 +61,8 @@ class Permissao(Base):
     id_permissao = Column(Integer, primary_key=True, autoincrement=True)
     permissao = Column(String(25), unique=True, nullable=False)
 
-    def __init__(self, nome):
-        self.nome = nome
+    def __repr__(self):
+        return f'<Permissao: {self.permissao}>'
 
 
 class Loja(Base):
@@ -80,6 +80,10 @@ class Loja(Base):
     inscricao_estadual = Column(String(20), nullable=False, unique=True)
     email = Column(String(50), nullable=False, unique=True)
     id_usuario = Column(Integer, ForeignKey('TUsuraio.id_usuario'))
+    usuario = relationship('Usuario', backref=backref('TLoja', lazy='dynamic'))
+
+    def __repr__(self):
+        return f'<Loja:{self.razao_social, self.nome_fantasia, self.cnpj, self.endereco, self.inscricao_estadual, self.cnpj}>'
 
 
 class Estoque(Base):
@@ -96,7 +100,10 @@ class Estoque(Base):
     data_validade = Column(Date, nullable=False)
     total_item = Column(Integer, nullable=False)
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
-    
+    loja = relationship('Loja', backref=backref('TEstoque', lazy='dymanic'))
+
+    def __repr__(self):
+        return f'<Estoque:{self.numero_lote, self.quantidade, self.data_fabricacao, self.data_validade, self.total_item}>'
 
 class Produto(Base):
     '''
@@ -111,6 +118,11 @@ class Produto(Base):
     preco_produto = Column(Integer, nullable=False)
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
     id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
+    store = relationship('Loja', backref=backref('TProduto', lazy='dynamic'))
+    estoque = relationship('Estoque', backref=backref('TProduto', lazy='dynamic'))
+
+    def __repr__(self):
+        return f'<Produto:{self.codigo_barras, self.nome_produto, self.preco_produto}>'
 
 
 class Tipo_Produto(Base):
@@ -123,6 +135,10 @@ class Tipo_Produto(Base):
     id_tp_produto = Column(Integer, primary_key=True, autoincrement=True)
     nome_tp_produto = Column(String(100), nullable=False)
     id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    produto = relationship('Produto', backref=backref('TTp_Produto', lazy='dynamic'))
+
+    def __repr__(self):
+        return f'<Tipo_Produto:{self.nome_tp_produto}>'
     
 
 class Kit(Base):
@@ -138,3 +154,7 @@ class Kit(Base):
     preco_kit = Column(Integer, nullable=False)
     validade_kit = Column(Date, nullable=False)
     id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    produto_2 = relationship('Produto', backref=backref('TKit', lazy='dynamic'))
+
+    def __repr__(self):
+        return f'<Kit:{self.nome_kit, self.qtd_kit, self.preco_kit, self.validade_kit}>'
