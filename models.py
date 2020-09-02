@@ -107,7 +107,6 @@ class Estoque(Base):
 
 class Produto(Base):
     '''
-
     CLASSE PRODUTO - MAPEIA TABELA TProduto NO BANCO DE DADOS
 
     '''
