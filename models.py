@@ -20,7 +20,7 @@ class Usuario(Base, UserMixin):
     login = Column(String(20), unique=True, nullable=False)
     senha = Column(String(10), nullable=False)
     id_permissao = Column(Integer, ForeignKey('TPermissao.id_permissao'))
-    role = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
+    permissao = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
     loja = relationship("UsuarioLoja", backref=backref('TUsuario', lazy='dynamic'))
 
     def __init__(self, nome, sobrenome, email, login, senha):
@@ -62,8 +62,8 @@ class Permissao(Base):
     id_permissao = Column(Integer, primary_key=True, autoincrement=True)
     permissao = Column(String(25), unique=True, nullable=False)
 
-    def __repr__(self):
-        return f'<Permissao: {self.permissao}>'
+    def __init__(self, permissao):
+        self.permissao = permissao
 
 
 class Loja(Base):
@@ -71,6 +71,9 @@ class Loja(Base):
 
     CLASSE LOJA - MAPEIA TABELA TLoja NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''    
     __tablename__ = 'TLoja'
     id_loja = Column(Integer, primary_key=True, autoincrement=True)
@@ -85,8 +88,7 @@ class Loja(Base):
     usuarios = relationship('UsuarioLoja', backref=backref('TLoja', lazy='dynamic'))
     estoque = relationship('Estoque', backref=backref('TLoja', lazy='dymanic'))
 
-    def __init__(self, id_loja, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
-        self.id_loja = id_loja
+    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
         self.razao_social = razao_social
         self.nome_fantasia = nome_fantasia
         self.cnpj = cnpj
@@ -124,6 +126,9 @@ class Estoque(Base):
 
     CLASSE ESTOQUE - MAPEIA TABELA TEstoque NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TEstoque'
     id_estoque = Column(Integer, primary_key=True, autoincrement=True)
@@ -147,6 +152,9 @@ class Produto(Base):
     '''
     CLASSE PRODUTO - MAPEIA TABELA TProduto NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TProduto'
     id_produto  = Column(Integer, primary_key=True, autoincrement=True)
@@ -194,6 +202,9 @@ class TipoProduto(Base):
 
     CLASSE TIPO_PRODUTO - MAPEIA TABELA TTp_Produto NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TTipo_Produto'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -208,6 +219,9 @@ class Kit(Base):
 
     CLASSE KIT - MAPEIA TABELA Kit NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TKit'
     id_kit = Column(Integer, primary_key=True, autoincrement=True)
