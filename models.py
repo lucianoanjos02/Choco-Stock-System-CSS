@@ -21,6 +21,7 @@ class Usuario(Base, UserMixin):
     senha = Column(String(10), nullable=False)
     id_permissao = Column(Integer, ForeignKey('TPermissao.id_permissao'))
     permissao = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
+    loja = relationship("UsuarioLoja", backref=backref('TUsuario', lazy='dynamic'))
 
     def __init__(self, nome, sobrenome, email, login, senha):
         self.nome = nome
