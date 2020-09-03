@@ -85,7 +85,7 @@ class Loja(Base):
     usuarios = relationship('UsuarioLoja', backref=backref('TLoja', lazy='dynamic'))
     estoque = relationship('Estoque', backref=backref('TLoja', lazy='dymanic'))
 
-    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, usuario_loja):
+    def __init__(self, id_loja, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
         self.id_loja = id_loja
         self.razao_social = razao_social
         self.nome_fantasia = nome_fantasia
