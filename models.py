@@ -71,6 +71,9 @@ class Loja(Base):
 
     CLASSE LOJA - MAPEIA TABELA TLoja NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''    
     __tablename__ = 'TLoja'
     id_loja = Column(Integer, primary_key=True, autoincrement=True)
@@ -85,7 +88,7 @@ class Loja(Base):
     usuarios = relationship('UsuarioLoja', backref=backref('TLoja', lazy='dynamic'))
     estoque = relationship('Estoque', backref=backref('TLoja', lazy='dymanic'))
 
-    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, usuario_loja):
+    def __init__(self, id_loja, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
         self.id_loja = id_loja
         self.razao_social = razao_social
         self.nome_fantasia = nome_fantasia
@@ -124,6 +127,9 @@ class Estoque(Base):
 
     CLASSE ESTOQUE - MAPEIA TABELA TEstoque NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TEstoque'
     id_estoque = Column(Integer, primary_key=True, autoincrement=True)
@@ -147,6 +153,9 @@ class Produto(Base):
     '''
     CLASSE PRODUTO - MAPEIA TABELA TProduto NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TProduto'
     id_produto  = Column(Integer, primary_key=True, autoincrement=True)
@@ -194,6 +203,9 @@ class TipoProduto(Base):
 
     CLASSE TIPO_PRODUTO - MAPEIA TABELA TTp_Produto NO BANCO DE DADOS
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TTipo_Produto'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -208,6 +220,9 @@ class Kit(Base):
 
     CLASSE KIT - MAPEIA TABELA Kit NO BANCO DE DADOS
 
+    @autor: Gabriel OLiveira Gonçalves -
+    @data: 29/08/2020 -
+    @versao: 1.0.0
     '''
     __tablename__ = 'TKit'
     id_kit = Column(Integer, primary_key=True, autoincrement=True)
