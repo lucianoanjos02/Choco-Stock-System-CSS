@@ -71,9 +71,6 @@ class Loja(Base):
 
     CLASSE LOJA - MAPEIA TABELA TLoja NO BANCO DE DADOS
 
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 29/08/2020 -
-    @versao: 1.0.0
     '''    
     __tablename__ = 'TLoja'
     id_loja = Column(Integer, primary_key=True, autoincrement=True)
@@ -127,9 +124,6 @@ class Estoque(Base):
 
     CLASSE ESTOQUE - MAPEIA TABELA TEstoque NO BANCO DE DADOS
 
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 29/08/2020 -
-    @versao: 1.0.0
     '''
     __tablename__ = 'TEstoque'
     id_estoque = Column(Integer, primary_key=True, autoincrement=True)
@@ -153,9 +147,6 @@ class Produto(Base):
     '''
     CLASSE PRODUTO - MAPEIA TABELA TProduto NO BANCO DE DADOS
 
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 29/08/2020 -
-    @versao: 1.0.0
     '''
     __tablename__ = 'TProduto'
     id_produto  = Column(Integer, primary_key=True, autoincrement=True)
@@ -203,9 +194,6 @@ class TipoProduto(Base):
 
     CLASSE TIPO_PRODUTO - MAPEIA TABELA TTp_Produto NO BANCO DE DADOS
 
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 29/08/2020 -
-    @versao: 1.0.0
     '''
     __tablename__ = 'TTipo_Produto'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -220,9 +208,6 @@ class Kit(Base):
 
     CLASSE KIT - MAPEIA TABELA Kit NO BANCO DE DADOS
 
-    @autor: Gabriel OLiveira Gonçalves -
-    @data: 29/08/2020 -
-    @versao: 1.0.0
     '''
     __tablename__ = 'TKit'
     id_kit = Column(Integer, primary_key=True, autoincrement=True)
