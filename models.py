@@ -20,8 +20,8 @@ class Usuario(Base, UserMixin):
     login = Column(String(20), unique=True, nullable=False)
     senha = Column(String(10), nullable=False)
     id_permissao = Column(Integer, ForeignKey('TPermissao.id_permissao'))
-    permissao = relationship('Permissao', backref=backref('TUsuario', lazy='dynamic'))
-    loja = relationship("UsuarioLoja", backref=backref('TUsuario', lazy='dynamic'))
+    permissao = relationship('Permissao', backref=backref('TUsuario'))
+    loja = relationship("UsuarioLoja", backref=backref('TUsuario'))
 
     def __init__(self, nome, sobrenome, email, login, senha):
         self.nome = nome
@@ -89,8 +89,8 @@ class Loja(Base):
     cep = Column(String(8), nullable=False)
     inscricao_estadual = Column(String(20), nullable=False, unique=True)
     email = Column(String(50), nullable=False, unique=True)
-    usuarios = relationship('UsuarioLoja', backref=backref('TLoja', lazy='dynamic'))
-    estoque = relationship('Estoque', backref=backref('TLoja', lazy='dymanic'))
+    usuarios = relationship('UsuarioLoja', backref=backref('TLoja'))
+    estoque = relationship('Estoque', backref=backref('TLoja'))
 
     def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
         self.razao_social = razao_social
@@ -142,7 +142,7 @@ class Estoque(Base):
     data_validade = Column(Date, nullable=False)
     total_item = Column(Integer, nullable=False)
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
-    produtos = relationship("EstoqueProduto", backref=backref('TEstoque', lazy='dynamic'))
+    produtos = relationship("EstoqueProduto", backref=backref('TEstoque'))
 
     def __init__(self, numero_lote, quantidade, data_fabricacao, data_validade, total_item):
         self.numero_lote = numero_lote
@@ -168,9 +168,9 @@ class Produto(Base):
     id_tipo = Column(Integer, ForeignKey('TTipo_Produto.id'))
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
     id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
-    tipo = relationship('TipoProduto', backref=backref('TProduto', lazy='dynamic'))
-    estoque = relationship('EstoqueProduto', backref=backref('TProduto', lazy='dynamic'))
-    kit = relationship('Kit', backref=backref('TProduto', lazy='dynamic'))
+    tipo = relationship('TipoProduto', backref=backref('TProduto'))
+    estoque = relationship('EstoqueProduto', backref=backref('TProduto'))
+    kit = relationship('Kit', backref=backref('TProduto'))
 
     def __init__(self, nome_produto, codigo_barras, preco_produto, id_tipo, id_loja, id_estoque):
         self.nome_produto = nome_produto
