@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario
+from models import Usuario, Permissao
 
 class UsuarioDAO:
     '''
@@ -52,3 +52,12 @@ class UsuarioDAO:
         finally:
             self.__db.close()
         return 'Usuário cadastrado com sucesso'
+
+
+class PermissaoDAO:
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def get_permissoes():
+        permissoes = self.__db.query(Permissao).all()
+        return permissoes

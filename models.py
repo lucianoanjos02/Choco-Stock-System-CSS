@@ -15,7 +15,7 @@ class Usuario(Base, UserMixin):
     __tablename__ = 'TUsuario'
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(25), nullable=False)
-    sobrenome = Column(String(25), nullable=False) 
+    sobrenome = Column(String(25), nullable=False)
     email = Column(String(150), unique=True, nullable=False)
     login = Column(String(20), unique=True, nullable=False)
     senha = Column(String(10), nullable=False)
@@ -163,7 +163,6 @@ class Produto(Base):
     __tablename__ = 'TProduto'
     id_produto  = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100), nullable=False)
-    codigo_barras = Column(String(100), nullable=False)
     preco = Column(Float, nullable=False)
     id_tipo = Column(Integer, ForeignKey('TTipo_Produto.id'))
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
@@ -174,7 +173,6 @@ class Produto(Base):
 
     def __init__(self, nome_produto, codigo_barras, preco_produto, id_tipo, id_loja, id_estoque):
         self.nome_produto = nome_produto
-        self.codigo_barras = codigo_barras
         self.preco_produto = preco_produto
         self.id_tipo = id_tipo
         self.id_loja = id_loja
@@ -229,13 +227,15 @@ class Kit(Base):
     '''
     __tablename__ = 'TKit'
     id_kit = Column(Integer, primary_key=True, autoincrement=True)
+    codigo = Column(String(20), unique=True, nullable=False)
     nome = Column(String(100), nullable=False)
     quantidade = Column(Integer, nullable=False)
     preco = Column(Float, nullable=False)
     data_validade = Column(Date, nullable=False)
     id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
 
-    def __init__(self, nome, quantidade, preco, data_validade, id_produto):
+    def __init__(self, codigo, nome, quantidade, preco, data_validade, id_produto):
+        self.codigo = codigo
         self.nome = nome
         self.quantidade = quantidade
         self.preco = preco
