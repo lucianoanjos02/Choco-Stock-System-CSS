@@ -1,6 +1,13 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf%}
 
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_usuario.css')}}">
+{% endblock %}
+
 {% block title %}
     Dashboard - CSS
 {% endblock %}
