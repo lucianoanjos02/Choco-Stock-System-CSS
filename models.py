@@ -23,12 +23,13 @@ class Usuario(Base, UserMixin):
     permissao = relationship('Permissao', backref=backref('TUsuario'))
     loja = relationship("UsuarioLoja", backref=backref('TUsuario'))
 
-    def __init__(self, nome, sobrenome, email, login, senha):
+    def __init__(self, nome, sobrenome, email, login, senha, id_permissao):
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.login = login
         self.senha = senha
+        self.id_permissao = id_permissao
     
     # -------------------------------------------------------------------------------------
     # ------ METODOS PROPERTY PARA IMPLEMENTAÇÃO DO FLASK-LOGIN COM A CLASSE USUARIO ------
