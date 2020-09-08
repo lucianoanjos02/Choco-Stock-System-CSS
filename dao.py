@@ -58,6 +58,9 @@ class PermissaoDAO:
     def __init__(self, db):
         self.__db = db_session
     
-    def get_permissoes():
-        permissoes = self.__db.query(Permissao).all()
+    def get_permissoes(self):
+        dados_permissoes = self.__db.query(Permissao).all()
+        permissoes = []
+        for permissao in dados_permissoes:
+            permissoes.append(permissao.permissao)
         return permissoes
