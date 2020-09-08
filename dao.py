@@ -58,6 +58,6 @@ class PermissaoDAO:
     def __init__(self, db):
         self.__db = db_session
     
-    def get_permissoes():
+    def get_permissoes(self):
         permissoes = self.__db.query(Permissao).all()
         return permissoes
