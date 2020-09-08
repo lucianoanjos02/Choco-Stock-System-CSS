@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_bootstrap import Bootstrap
 from database import db_session
-from forms import LoginForm
+from forms import LoginForm, CadastroUsuarioForm
 from dao import UsuarioDAO
 import os
 import binascii
@@ -106,6 +106,17 @@ def logout():
     '''
     logout_user()
     return redirect(url_for('login'))
+
+
+@app.route('/usuario/cadastro', methods=['GET', 'POST'])
+def cadastro_usuario():
+    '''
+
+    '''
+    form = CadastroUsuarioForm()
+    if form.validate_on_submit():
+        return render_template('cadastro_usuario.html', form=form)
+    return render_template('cadastro_usuario.html', form=form)
 
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 

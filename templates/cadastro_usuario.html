@@ -46,14 +46,14 @@
     {% endwith %}
     <div class="container">
         <form class="form-horizontal" method="POST">
-            <h1>Cadastro de Usuário</h1>
+            <h1>Cadastro de Usuario</h1>
             {{form.csrf_token}}
-            {{form.nome}}
-            {{form.sobrenome}}
-            {{form.email}}
-            {{form.login}}
-            {{form.senha}}
-            {{form.permissao}}
+            {{wtf.form_field(form.nome)}}
+            {{wtf.form_field(form.sobrenome)}}
+            {{wtf.form_field(form.email)}}
+            {{wtf.form_field(form.login)}}
+            {{wtf.form_field(form.senha)}}
+            {{wtf.form_field(form.permissao)}}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
         </form>
     </div>
