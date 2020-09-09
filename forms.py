@@ -20,7 +20,11 @@ class LoginForm(FlaskForm):
 
 class CadastroUsuarioForm(FlaskForm):
     '''
+        CLASSE CadastroUsuarioForm - MAPEIA O FORMULÁRIO DE CADASTRO DE USUÁRIO DA VIEW cadastro_usuario.html
 
+        @autor: Gabriel Oliveira Gonçalves -
+        @data: 07/09/2020 -
+        @versao: 1.0.0
     '''
     nome = StringField('Nome', validators=[InputRequired(), Length(max=25)])
     sobrenome = StringField('Sobrenome', validators=[InputRequired(), Length(max=25)])
