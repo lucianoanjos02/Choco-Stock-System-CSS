@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario, Permissao
+from models import Usuario, Permissao, Loja, Produto
 
 class UsuarioDAO:
     '''
@@ -64,3 +64,27 @@ class PermissaoDAO:
         for permissao in dados_permissoes:
             permissoes.append(permissao.permissao)
         return permissoes
+
+
+class LojaDAO:
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def get_lojas(self):
+        dados_lojas = self.__db.query(Loja).all()
+        lojas = []
+        for loja in dados_lojas:
+            lojas.append(loja.id_loja)
+        return lojas
+
+
+class ProdutoDAO:
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def get_produtos(self):
+        dados_produtos = self.__db.query(Produto).all()
+        produtos = []
+        for produto in dados_produtos:
+            produtos.append(produto.nome)
+        return produtos

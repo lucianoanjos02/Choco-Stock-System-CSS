@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf%}
 
 {% block title %}
-    Dashboard - CSS
+    Cadastro de Estoque - CSS
 {% endblock %}
 
 {% block content %}
@@ -44,11 +44,12 @@
     </div>
     {% endif %}
     {% endwith %}
-    <div class="form-control">
+    <div class="container">
         <form class="form-horizontal" method="POST">
             <h1>Cadastro de Estoque</h1>
             {{form.csrf_token}}
             {{wtf.form_field(form.codigo_lote)}}
+            {{wtf.form_field(form.produto)}}
             {{wtf.form_field(form.quantidade)}}
             {{wtf.form_field(form.data_fabricação)}}
             {{wtf.form_field(form.data_validade)}}
