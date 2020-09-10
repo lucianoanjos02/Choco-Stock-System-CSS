@@ -1,7 +1,7 @@
 from database import Base
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, String, Integer, Date, ForeignKey, Float
+from sqlalchemy import Column, String, Integer, Date, ForeignKey, Numeric
 
 class Usuario(Base, UserMixin):
     '''
@@ -93,7 +93,7 @@ class Loja(Base):
     usuarios = relationship('UsuarioLoja', backref=backref('TLoja'))
     estoque = relationship('Estoque', backref=backref('TLoja'))
 
-    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email, id_usuario, usuario):
+    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email):
         self.razao_social = razao_social
         self.nome_fantasia = nome_fantasia
         self.cnpj = cnpj
@@ -102,8 +102,6 @@ class Loja(Base):
         self.cep = cep
         self.inscricao_estadual = inscricao_estadual
         self.email = email
-        self.id_usuario = id_usuario
-        self.usuario = usuario
 
 
 class UsuarioLoja(Base):
@@ -118,12 +116,12 @@ class UsuarioLoja(Base):
     '''
     __tablename__ = 'TUsuario_Loja'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
-    id_usuario = Column(Integer, ForeignKey('TUsuario.id_usuario'))
+    fk_id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
+    fk_id_usuario = Column(Integer, ForeignKey('TUsuario.id_usuario'))
 
-    def __init__(self, id_loja, id_usuario):
-        self.id_loja = id_loja
-        self.id_usuario = id_usuario
+    def __init__(self, fk_id_loja, fk_id_usuario):
+        self.fk_id_loja = fk_id_loja
+        self.fk_id_usuario = fk_id_usuario
 
 
 class Estoque(Base):
@@ -164,20 +162,16 @@ class Produto(Base):
     __tablename__ = 'TProduto'
     id_produto  = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100), nullable=False)
-    preco = Column(Float, nullable=False)
+    preco = Column(Numeric(5,2), nullable=False)
     id_tipo = Column(Integer, ForeignKey('TTipo_Produto.id'))
-    id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
-    id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
     tipo = relationship('TipoProduto', backref=backref('TProduto'))
     estoque = relationship('EstoqueProduto', backref=backref('TProduto'))
-    kit = relationship('Kit', backref=backref('TProduto'))
+    kit = relationship('KitProduto', backref=backref('TProduto'))
 
-    def __init__(self, nome_produto, codigo_barras, preco_produto, id_tipo, id_loja, id_estoque):
+    def __init__(self, nome_produto, preco_produto, id_tipo):
         self.nome_produto = nome_produto
         self.preco_produto = preco_produto
         self.id_tipo = id_tipo
-        self.id_loja = id_loja
-        self.id_estoque = id_estoque
 
 
 class EstoqueProduto(Base):
@@ -192,12 +186,12 @@ class EstoqueProduto(Base):
     '''
     __tablename__ = 'TEstoque_Produto'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
-    id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    fk_id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
+    fk_id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
 
-    def __init__(self, id_loja, id_produto):
-        self.id_loja = id_loja
-        self.id_produto = id_produto
+    def __init__(self, fk_id_estoque, fk_id_produto):
+        self.fk_id_estoque = fk_id_estoque
+        self.fk_id_produto = fk_id_produto
 
 
 class TipoProduto(Base):
@@ -231,9 +225,9 @@ class Kit(Base):
     codigo = Column(String(20), unique=True, nullable=False)
     nome = Column(String(100), nullable=False)
     quantidade = Column(Integer, nullable=False)
-    preco = Column(Float, nullable=False)
+    preco = Column(Numeric(5,2), nullable=False)
     data_validade = Column(Date, nullable=False)
-    id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    produtos = relationship('KitProduto', backref=backref('TKit'))
 
     def __init__(self, codigo, nome, quantidade, preco, data_validade, id_produto):
         self.codigo = codigo
@@ -242,3 +236,23 @@ class Kit(Base):
         self.preco = preco
         self.data_validade = data_validade
         self.id_produto = id_produto
+
+
+class KitProduto(Base):
+    '''
+
+    CLASSE KitProduto - MAPEIA TABELA TKit_Produto NO BANCO DE DADOS 
+    QUE FAZ A ASSOCIAÇÃO ENTRE Kit E Produto
+  
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 08/09/2020 -
+    @versao: 1.0.0
+    '''
+    __tablename__ = 'TKit_Produto'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fk_id_kit = Column(Integer, ForeignKey('TKit.id_kit'))
+    fk_id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+
+    def __init__(self, fk_id_kit, fk_id_produto):
+        self.fk_id_kit = fk_id_kit
+        self.fk_id_produto = fk_id_produto
