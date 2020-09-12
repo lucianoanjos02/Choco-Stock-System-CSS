@@ -84,7 +84,7 @@ class Loja(Base):
     id_loja = Column(Integer, primary_key=True, autoincrement=True)
     razao_social = Column(String(100), nullable=False, unique=True)
     nome_fantasia = Column(String(100), nullable=False, unique=True)
-    cnpj = Column(String(11), nullable=False, unique=True)
+    cnpj = Column(String(14), nullable=False, unique=True)
     logradouro = Column(String(100), nullable=False)
     numero_logradouro = Column(String(10), nullable=False)
     cep = Column(String(8), nullable=False)
@@ -136,19 +136,14 @@ class Estoque(Base):
     __tablename__ = 'TEstoque'
     id_estoque = Column(Integer, primary_key=True, autoincrement=True)
     codigo_lote = Column(String(10), nullable=False)
-    quantidade = Column(Integer, nullable=False)
-    data_fabricacao = Column(Date, nullable=False)
-    data_validade = Column(Date, nullable=False)
     total_item = Column(Integer, nullable=False)
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
     produtos = relationship("EstoqueProduto", backref=backref('TEstoque'))
 
-    def __init__(self, numero_lote, quantidade, data_fabricacao, data_validade, total_item):
+    def __init__(self, numero_lote, data_fabricacao, data_validade, total_item, id_loja):
         self.numero_lote = numero_lote
-        self.quantidade = quantidade
-        self.data_fabricacao = data_fabricacao
-        self.data_validade = data_validade
         self.total_item = total_item
+        self.id_loja = id_loja
 
 
 class Produto(Base):
@@ -188,10 +183,16 @@ class EstoqueProduto(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     fk_id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
     fk_id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
+    quantidade_produto = Column(Integer, nullable=False)
+    data_fabricacao = Column(Date, nullable=False)
+    data_validade = Column(Date, nullable=False)
 
-    def __init__(self, fk_id_estoque, fk_id_produto):
+    def __init__(self, fk_id_estoque, fk_id_produto, quantidade_produto, data_fabricacao, data_validade):
         self.fk_id_estoque = fk_id_estoque
         self.fk_id_produto = fk_id_produto
+        self.quantidade_produto = quantidade_produto
+        self.data_fabricacao = data_fabricacao
+        self.data_validade = data_validade
 
 
 class TipoProduto(Base):
