@@ -1,6 +1,13 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf%}
 
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_estoque.css')}}">
+{% endblock %}
+
 {% block title %}
     Cadastro de Estoque - CSS
 {% endblock %}
@@ -49,12 +56,45 @@
             <h1>Cadastro de Estoque</h1>
             {{form.csrf_token}}
             {{wtf.form_field(form.codigo_lote)}}
-            {{wtf.form_field(form.produto)}}
-            {{wtf.form_field(form.quantidade)}}
-            {{wtf.form_field(form.data_fabricação)}}
-            {{wtf.form_field(form.data_validade)}}
             {{wtf.form_field(form.loja)}}
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+            <div class="container" id="produtos">
+                <div class="container" id="info-produto">
+                    <div class="col-xs-6">
+                        {{wtf.form_field(form.produto)}}
+                    </div>
+                    <div class="col-xs-6">
+                        {{wtf.form_field(form.quantidade)}}
+                    </div>
+                    <div class="col-xs-6">
+                        {{wtf.form_field(form.data_fabricação)}}
+                    </div>
+                    <div class="col-xs-6">
+                        {{wtf.form_field(form.data_validade)}}
+                    </div>  
+                </div>
+            </div>
+            <div class="container" id="produto-button">
+                <div class="col-xs-3">
+                    <button class="btn btn-lg btn-success btn-block" id="adicionar-produto" type="button">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        Adicionar Produto
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Remover Produto
+                    </button>
+                </div> 
+            </div>
+            <div class="col-xs-4">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+            </div>
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cadastro_estoque.js') }}"></script>
+{{ super() }}
 {% endblock %}
