@@ -117,6 +117,7 @@ def logout():
 
 
 @app.route('/usuario/cadastro', methods=['GET', 'POST'])
+@login_required
 def cadastro_usuario():
     '''
     ROTA UTILIZADA PARA REALIZAR O CADASTRO DO USUÁRIO DA APLICAÇÃO
@@ -141,6 +142,7 @@ def cadastro_usuario():
 
 
 @app.route('/estoque/cadastro', methods=['GET'])
+@login_required
 def form_cadastro_estoque():
     '''
     ROTA QUE RETORNA A VIEW DE CADASTRO DO ESTOQUE (cadastro_estoque.html)
@@ -149,15 +151,24 @@ def form_cadastro_estoque():
     RENDERIZAÇÃO DELA.
 
     @autor: Luciano Gomes Vieira dos Anjos -
-    @data: 27/08/2020 -
-    @URL: http://localhost:5000/login - 
+    @data: 12/09/2020 -
+    @URL: http://localhost:5000/estoque/cadastro - 
     @versao: 1.0.0
     '''
     return render_template('cadastro_estoque.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos())
 
 
 @app.route('/cadastrar_estoque', methods=['POST'])
+@login_required
 def cadastrar_estoque():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE CADASTRO DOS LOTES EM ESTOQUE
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/09/2020 -
+    @URL: http://localhost:5000/cadastrar_estoque - 
+    @versao: 1.0.0
+    '''
     total_item = 0
     info_produtos = []
     for field in request.form.values():
@@ -184,12 +195,33 @@ def cadastrar_estoque():
 
 
 @app.route('/produtos/cadastro', methods=['GET'])
+@login_required
 def form_cadastro_produto():
+    '''
+    ROTA QUE RETORNA A VIEW DE CADASTRO DE PRODUTO (cadastro_produto.html)
+
+    -SÃO PASSADOS OS DADOS DE PRODUTOS PARA O CAMPOS SELECT DA VIEW NA
+    RENDERIZAÇÃO DELA.
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 12/09/2020 -
+    @URL: http://localhost:5000/produtos/cadastro - 
+    @versao: 1.0.0
+    '''
     return render_template('cadastro_produto.html', tipos_produto=tipo_produto_dao.get_tipos_produto())
 
 
 @app.route('/cadastrar_produto', methods=['POST'])
+@login_required
 def cadastrar_produto():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE CADASTRO DE PRODUTO
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/09/2020 -
+    @URL: http://localhost:5000/cadastrar_produto - 
+    @versao: 1.0.0
+    '''
     info_produto = []
     for field in request.form.values():
         info_produto.append(field)
@@ -203,12 +235,33 @@ def cadastrar_produto():
 
 
 @app.route('/kit/cadastro', methods=['GET'])
+@login_required
 def form_cadastro_kit():
+    '''
+    ROTA QUE RETORNA A VIEW DE CADASTRO DE KIT (cadastro_kit.html)
+
+    -SÃO PASSADOS OS DADOS DE PRODUTOS PARA O CAMPOS SELECT DA VIEW NA
+    RENDERIZAÇÃO DELA.
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 12/09/2020 -
+    @URL: http://localhost:5000/kit/cadastro - 
+    @versao: 1.0.0
+    '''
     return render_template('cadastro_kit.html', produtos=produto_dao.get_produtos())
 
 
 @app.route('/cadastrar_kit', methods=['POST'])
+@login_required
 def cadastrar_kit():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE CADASTRO DO KIT
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/09/2020 -
+    @URL: http://localhost:5000/cadastrar_kit - 
+    @versao: 1.0.0
+    '''
     info_kit = []
     for field in request.form.values():
         info_kit.append(field)
@@ -229,12 +282,30 @@ def cadastrar_kit():
 
 
 @app.route('/loja/cadastro', methods=['GET'])
+@login_required
 def form_cadastro_loja():
+    '''
+    ROTA QUE RETORNA A VIEW DE CADASTRO DA LOJA (cadastro_loja.html)
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 12/09/2020 -
+    @URL: http://localhost:5000/loja/cadastro - 
+    @versao: 1.0.0
+    '''
     return render_template('cadastro_loja.html')
 
 
 @app.route('/cadastrar_loja', methods=['POST'])
+@login_required
 def cadastrar_loja():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE CADASTRO DA LOJA
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/09/2020 -
+    @URL: http://localhost:5000/cadastrar_loja - 
+    @versao: 1.0.0
+    '''
     info_loja = []
     for field in request.form.values():
         info_loja.append(field)
