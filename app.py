@@ -3,8 +3,8 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_bootstrap import Bootstrap
 from database import db_session
 from forms import LoginForm, CadastroUsuarioForm
-from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO
-from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja
+from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO, PermissaoDAO
+from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja, Usuario
 import os
 import binascii
 
@@ -24,6 +24,7 @@ usuario_dao = UsuarioDAO(db_session)
 loja_dao = LojaDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
 tipo_produto_dao = TipoProdutoDAO(db_session)
+permissao_dao = PermissaoDAO(db_session)
 kit_dao = KitDAO(db_session)
 kit_produto_dao = KitProdutoDAO(db_session)
 estoque_dao = EstoqueDAO(db_session)

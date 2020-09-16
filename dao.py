@@ -74,10 +74,10 @@ class PermissaoDAO:
             @data: 09/08/2020 -
             @versao: 1.0.0
         '''
-        dados_permissoes = self.__db.query(Permissao).all()
+        dados_permissoes = self.__db.query(Permissao.permissao).all()
         permissoes = []
         for permissao in dados_permissoes:
-            permissoes.append(permissao.permissao)
+            permissoes.append(permissao)
         return permissoes
     
     def get_id_permissao(self, permissao):

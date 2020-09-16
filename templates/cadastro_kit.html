@@ -93,6 +93,7 @@
       </div>
     </div>
 </nav>
+<div class="container mensagem">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
@@ -106,6 +107,7 @@
     </div>
     {% endif %}
     {% endwith %}
+</div>
     <div class="container">
         <form name="formKit" class="form-horizontal" action="{{ url_for('cadastrar_kit') }}" method="POST">
             <h1>Cadastro de Kit</h1>
