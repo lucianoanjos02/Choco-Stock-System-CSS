@@ -142,6 +142,24 @@ class LojaDAO:
             lojas.append(loja.id_loja)
         return lojas
 
+    def cadastrar_loja(self, loja):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DA LOJA NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(loja)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar loja")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Loja cadastrada com sucesso'
+
 
 class ProdutoDAO:
     '''

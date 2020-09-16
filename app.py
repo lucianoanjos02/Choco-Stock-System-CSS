@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from database import db_session
 from forms import LoginForm, CadastroUsuarioForm
 from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO
-from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto
+from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja
 import os
 import binascii
 
@@ -225,6 +225,30 @@ def cadastrar_kit():
         pos += 1
         kit_produto_dao.cadastrar_kit_produtos(kit_produtos)
     flash("Kit cadastrado com sucesso!")
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/loja/cadastro', methods=['GET'])
+def form_cadastro_loja():
+    return render_template('cadastro_loja.html')
+
+
+@app.route('/cadastrar_loja', methods=['POST'])
+def cadastrar_loja():
+    info_loja = []
+    for field in request.form.values():
+        info_loja.append(field)
+    loja = Loja(info_loja[0],
+                info_loja[1],
+                info_loja[2],
+                info_loja[3],
+                info_loja[4],
+                info_loja[5],
+                info_loja[6],
+                info_loja[7],
+                info_loja[8])
+    loja_dao.cadastrar_loja(loja)
+    flash("Loja cadastrada com sucesso!")
     return redirect(url_for('dashboard'))
 
 
