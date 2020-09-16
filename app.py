@@ -19,7 +19,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = "Por favor, faça o login para acessar o sistema!"
 
-#INSTANCIA DO UsuarioDAO
+#INSTANCIAS DAS CLASSES DAO
 usuario_dao = UsuarioDAO(db_session)
 loja_dao = LojaDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
