@@ -5,7 +5,7 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_estoque.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_kit.css')}}">
 {% endblock %}
 
 {% block title %}
@@ -62,26 +62,20 @@
                 <label class="control-label" for="nome">Nome do Kit</label>
                 <input class="form-control" id="nome" name="nome" required type="text" value=""> 
             </div>
-            <div class="col-xs-6">
-                <div class="form-group  required">
-                    <label class="control-label" for="quantidade">Quantidade</label>
-                    <input class="form-control" id="quantidade" name="quantidade" required type="number">
-                </div>
+            <div class="form-group  required">
+                <label class="control-label" for="quantidade">Quantidade</label>
+                <input class="form-control" id="quantidade" name="quantidade" required type="number">
             </div>
-            <div class="col-xs-6">
-                <div class="form-group  required">
-                    <label class="control-label" for="preco">Preço</label>
-                    <input class="form-control" id="preco" name="preco" required type="number" step=".01">
-                </div>
+            <div class="form-group  required">
+                <label class="control-label" for="preco">Preço</label>
+                <input class="form-control" id="preco" name="preco" required type="number" step=".01">
             </div>
-            <div class="col-xs-6">
-                <div class="form-group  required">
-                    <label class="control-label" for="data_validade1">Data de Validade</label>
-                    <input class="form-control" id="data_validade" name="data_validade" required type="date">
-                </div>
+            <div class="form-group  required">
+                <label class="control-label" for="data_validade1">Data de Validade</label>
+                <input class="form-control" id="data_validade" name="data_validade" required type="date">
             </div>
             <div class="container" id="produtos">
-                    <div class="form-group ">
+                    <div class="form-group produtos">
                         <label class="control-label" for="produto1">Produto</label> 
                         <select class="form-control produto" id="produto1" name="produto1">
                             {% for produto in produtos %}
@@ -90,28 +84,29 @@
                         </select>
                     </div>    
                 </div>
-            <div class="container" id="produto-button">
-                <div class="col-xs-3">
-                    <button class="btn btn-lg btn-success btn-block" id="adicionar-produto" type="button">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        Adicionar Produto
-                    </button>
+                <div class="container" id="produto-button">
+                    <div class="col-xs-3">
+                        <button class="btn btn-lg btn-success btn-block" id="adicionar-produto" type="button">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Adicionar Produto
+                        </button>
+                    </div>
+                    <div class="col-xs-3">
+                        <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            Remover Produto
+                        </button>
+                    </div> 
                 </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        Remover Produto
-                    </button>
-                </div> 
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Cadastrar</button>
+                <div class="col-xs-4">
+                    <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Cadastrar</button>
+                </div>
             </div>
         </form>
     </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/cadastro_estoque.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cadastro_kit.js') }}"></script>
 {{ super() }}
 {% endblock %}
