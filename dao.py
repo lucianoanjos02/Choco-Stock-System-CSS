@@ -58,7 +58,6 @@ class PermissaoDAO:
     '''
         CLASSE PermissaoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
         Permisssao DO MÓDULO models.py QUE MAPEIA A TABELA TPermissao
-
         @autor: Luciano Gomes Vieira dos Anjos -
         @data: 07/08/2020 -
         @versao: 1.0.0
@@ -69,15 +68,14 @@ class PermissaoDAO:
     def get_permissoes(self):
         '''
             METODO QUE RETORNA AS PERMISSÕES DE USUÁRIO REGISTRADAS NO BANCO
-
             @autor: Luciano Gomes Vieira dos Anjos -
             @data: 09/08/2020 -
             @versao: 1.0.0
         '''
-        dados_permissoes = self.__db.query(Permissao.permissao).all()
+        dados_permissoes = self.__db.query(Permissao).all()
         permissoes = []
         for permissao in dados_permissoes:
-            permissoes.append(permissao)
+            permissoes.append(permissao.permissao)
         return permissoes
     
     def get_id_permissao(self, permissao):

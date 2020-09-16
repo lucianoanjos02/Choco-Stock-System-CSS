@@ -191,7 +191,7 @@ def cadastrar_estoque():
     for quantidade in quantidade_produtos:
         total_item += quantidade[0]
     estoque_dao.update_total_item(total_item, estoque_dao.get_ultimo_estoque_id())
-    flash("Produtos cadastro em estoque com sucesso!")
+    flash("Produto(s) cadastrado(s) em estoque com sucesso!")
     return redirect(url_for('dashboard'))
 
 
