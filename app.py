@@ -116,11 +116,24 @@ def logout():
 @app.route('/usuario/cadastro', methods=['GET', 'POST'])
 def cadastro_usuario():
     '''
+    ROTA UTILIZADA PARA REALIZAR O CADASTRO DO USUÁRIO DA APLICAÇÃO
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 07/09/2020 -
+    @URL: http://localhost:5000/usuario/cadastro -
+    @versao: 1.0.0
     '''
     form = CadastroUsuarioForm()
     if form.validate_on_submit():
-        return render_template('cadastro_usuario.html', form=form)
+        usuario = Usuario(form.nome.data,
+                          form.sobrenome.data,
+                          form.email.data,
+                          form.login.data,
+                          form.senha.data,
+                          permissao_dao.get_id_permissao(form.permissao.data)[0])
+        usuario_dao.cadastrar_usuario(usuario)
+        flash("Usuário cadastrado com sucesso!")
+        return redirect(url_for('dashboard'))
     return render_template('cadastro_usuario.html', form=form)
 
 
