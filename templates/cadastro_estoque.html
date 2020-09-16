@@ -30,6 +30,61 @@
                     <li class="active">
                         <a href="{{ url_for('dashboard') }}">Dashboard</a>
                     </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Estoque
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('form_cadastro_estoque') }}">Cadastro de Estoque</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Produto
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('form_cadastro_produto') }}">Cadastro de Produto</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Kit
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('form_cadastro_kit') }}">Cadastro de Kit</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Loja
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Usuário
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
                     <button type="submit" class="btn btn-success">Sair</button>
@@ -52,7 +107,7 @@
     {% endif %}
     {% endwith %}
     <div class="container">
-        <form name="formEstoque" class="form-horizontal" action="{{ url_for('cadastrar_estoque') }}" method="POST">
+        <form class="form-horizontal" action="{{ url_for('cadastrar_estoque') }}" method="POST">
             <h1>Cadastro de Estoque</h1>
             <div class="form-group  required">
                 <label class="control-label" for="codigo_lote">Código do Lote</label>
@@ -81,19 +136,19 @@
                     <div class="col-xs-6">
                         <div class="form-group  required">
                             <label class="control-label" for="quantidade1">Quantidade</label>
-                            <input class="form-control" id="quantidade1" name="quantidade1" required type="number">
+                            <input class="form-control" id="quantidade1" name="quantidade1" required type="text">
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="form-group  required">
                             <label class="control-label" for="data_fabricacao1">Data de Fabricação</label>
-                            <input class="form-control" id="data_fabricacao1" name="data_fabricacao1" required type="date">
+                            <input class="form-control" id="data_fabricacao1" name="data_fabricacao1" required type="text">
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="form-group  required">
                             <label class="control-label" for="data_validade1">Data de Validade</label>
-                            <input class="form-control" id="data_validade1" name="data_validade1" required type="date">
+                            <input class="form-control" id="data_validade1" name="data_validade1" required type="text">
                         </div>
                     </div>  
                 </div>
@@ -113,7 +168,7 @@
                 </div> 
             </div>
             <div class="col-xs-4">
-                <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Cadastrar</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
             </div>
         </form>
     </div>
