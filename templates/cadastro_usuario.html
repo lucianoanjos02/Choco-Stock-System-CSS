@@ -1,6 +1,13 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf%}
 
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_usuario.css')}}">
+{% endblock %}
+
 {% block title %}
     Dashboard - CSS
 {% endblock %}
@@ -44,15 +51,16 @@
     </div>
     {% endif %}
     {% endwith %}
-    <div class="form-control">
+    <div class="container">
         <form class="form-horizontal" method="POST">
-            <h1>Cadastro de Estoque</h1>
+            <h1>Cadastro de Usuario</h1>
             {{form.csrf_token}}
-            {{wtf.form_field(form.codigo_lote)}}
-            {{wtf.form_field(form.quantidade)}}
-            {{wtf.form_field(form.data_fabricação)}}
-            {{wtf.form_field(form.data_validade)}}
-            {{wtf.form_field(form.loja)}}
+            {{wtf.form_field(form.nome)}}
+            {{wtf.form_field(form.sobrenome)}}
+            {{wtf.form_field(form.email)}}
+            {{wtf.form_field(form.login)}}
+            {{wtf.form_field(form.senha)}}
+            {{wtf.form_field(form.permissao)}}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
         </form>
     </div>
