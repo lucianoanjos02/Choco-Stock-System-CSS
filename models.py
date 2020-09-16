@@ -230,13 +230,12 @@ class Kit(Base):
     data_validade = Column(Date, nullable=False)
     produtos = relationship('KitProduto', backref=backref('TKit'))
 
-    def __init__(self, codigo, nome, quantidade, preco, data_validade, id_produto):
+    def __init__(self, codigo, nome, quantidade, preco, data_validade):
         self.codigo = codigo
         self.nome = nome
         self.quantidade = quantidade
         self.preco = preco
         self.data_validade = data_validade
-        self.id_produto = id_produto
 
 
 class KitProduto(Base):

@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto, TipoProduto
+from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto, TipoProduto, Kit, KitProduto
 
 class UsuarioDAO:
     '''
@@ -231,10 +231,10 @@ class EstoqueDAO:
     
     def get_ultimo_estoque_id(self):
         '''
-            METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO LOGIN DO USUÁRIO
+            METODO QUE RETORNA O ID DO ÚLTIMO LOTE DO ESTOQUE CADASTRADO NO SISTEMA
 
             @autor: Luciano Gomes Vieira dos Anjos -
-            @data: 26/08/2020 -
+            @data: 14/09/2020 -
             @versao: 1.0.0
         '''
         estoque = self.__db.query(Estoque).order_by(Estoque.id_estoque.desc()).first()
@@ -302,3 +302,76 @@ class EstoqueProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto(s) cadastrado(s) no estoque com sucesso'
+
+
+class KitDAO:
+    '''
+        CLASSE KitDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        Kit DO MÓDULO models.py QUE MAPEIA A TABELA TKit
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 15/09/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def cadastrar_kit(self, kit):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DO KIT NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(kit)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar kit")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Kit cadastrado com sucesso'
+    
+    def get_ultimo_kit_id(self):
+        '''
+            METODO QUE RETORNA O ID DO ÚLTIMO KIT CADASTRADO NO SISTEMA
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        kit = self.__db.query(Kit).order_by(Kit.id_kit.desc()).first()
+        return kit.id_kit
+
+
+class KitProdutoDAO:
+    '''
+        CLASSE KitProdutoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        KitProduto DO MÓDULO models.py QUE MAPEIA A TABELA TKit_Produto
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 15/09/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+
+    def cadastrar_kit_produtos(self, kit_produto):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DOS PRODUTOS/KITS NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(kit_produto)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar produto(s) do kit")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Produto(s) do kit cadastrado(s) com sucesso'

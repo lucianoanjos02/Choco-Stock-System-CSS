@@ -3,8 +3,8 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_bootstrap import Bootstrap
 from database import db_session
 from forms import LoginForm, CadastroUsuarioForm
-from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO
-from models import Estoque, EstoqueProduto, Produto
+from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO
+from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto
 import os
 import binascii
 
@@ -24,6 +24,8 @@ usuario_dao = UsuarioDAO(db_session)
 loja_dao = LojaDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
 tipo_produto_dao = TipoProdutoDAO(db_session)
+kit_dao = KitDAO(db_session)
+kit_produto_dao = KitProdutoDAO(db_session)
 estoque_dao = EstoqueDAO(db_session)
 estoque_produto_dao = EstoqueProdutoDAO(db_session)
 
@@ -195,11 +197,34 @@ def cadastrar_produto():
     produto = Produto(info_produto[0],
                       info_produto[1],
                       tipo_produto_dao.get_id_tipo(info_produto[2])[0])
-    print(produto.nome)
-    print(produto.preco)
-    print(produto.tipo)
     produto_dao.cadastrar_produto(produto)
     flash("Produto cadastrado com sucesso!")
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/kit/cadastro', methods=['GET'])
+def form_cadastro_kit():
+    return render_template('cadastro_kit.html', produtos=produto_dao.get_produtos())
+
+
+@app.route('/cadastrar_kit', methods=['POST'])
+def cadastrar_kit():
+    info_kit = []
+    for field in request.form.values():
+        info_kit.append(field)
+    kit = Kit(info_kit[0], 
+              info_kit[1],
+              info_kit[2],
+              info_kit[3],
+              info_kit[4])
+    kit_dao.cadastrar_kit(kit)
+    pos = 5
+    while pos < len(info_kit):
+        kit_produtos = KitProduto(kit_dao.get_ultimo_kit_id(),
+                                  produto_dao.get_id_produto(info_kit[pos]))
+        pos += 1
+        kit_produto_dao.cadastrar_kit_produtos(kit_produtos)
+    flash("Kit cadastrado com sucesso!")
     return redirect(url_for('dashboard'))
 
 

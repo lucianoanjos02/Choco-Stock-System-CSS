@@ -1,0 +1,19 @@
+.form-horizontal {
+    margin-top: 13%;
+}
+
+.produto1 {
+    margin: 5px 10% 10px 5px;
+    border: 0.25px solid #adadad;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+#produto-button {
+    margin-left: 28%;
+}
+
+.col-xs-4 {
+    margin-top: 5%;
+    margin-left: 34%;
+}
