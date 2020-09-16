@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario, Permissao, Loja, Produto
+from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto
 
 class UsuarioDAO:
     '''
@@ -133,3 +133,119 @@ class ProdutoDAO:
         for produto in dados_produtos:
             produtos.append(produto.nome)
         return produtos
+    
+    def get_id_produto(self, nome_produto):
+        '''
+            METODO QUE RETORNA O ID DO PRODUTO REGISTRADO NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 12/09/2020 -
+            @versao: 1.0.0
+        '''
+        id_produto = self.__db.query(Produto).filter(Produto.nome == nome_produto).first()
+        return id_produto.id_produto
+
+
+class EstoqueDAO:
+    '''
+        CLASSE EstoqueDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        Estoque DO MÓDULO models.py QUE MAPEIA A TABELA TEstoque
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 09/08/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def cadastrar_estoque(self, estoque):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DO ESTOQUE NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 12/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(estoque)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar estoque")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Estoque cadastrado com sucesso'
+    
+    def get_ultimo_estoque_id(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO LOGIN DO USUÁRIO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 26/08/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).order_by(Estoque.id_estoque.desc()).first()
+        return estoque.id_estoque
+    
+    def update_total_item(self, novo_total, id_estoque):
+        '''
+            METODO QUE ATUALIZA A QUANTIDADE TOTAL DE PRODUTOS DO ESTOQUE NO BANCO
+            DE ACORDO COM A QUANTIDADE REGISTRADA DE CADA PRODUTO, APÓS FEITO O CADASTRO
+            DO LOTE
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 14/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(Estoque).filter(Estoque.id_estoque == id_estoque).update({Estoque.total_item: novo_total})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar total_item")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'total_item atualizado com sucesso'
+
+
+class EstoqueProdutoDAO:
+    '''
+        CLASSE EstoqueProdutoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        EstoqueProduto DO MÓDULO models.py QUE MAPEIA A TABELA TEstoque_Produto
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 12/09/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+
+    def get_quantidade_produtos(self, id_estoque):
+        '''
+            METODO QUE RETORNA AS QUANTIDADES DOS PRODUTOS CADASTRADOS
+            EM UM DETERMINADO LOTE (id_estoque)
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 14/09/2020 -
+            @versao: 1.0.0
+        '''
+        quantidades_estoque = self.__db.query(EstoqueProduto.quantidade_produto).filter(EstoqueProduto.fk_id_estoque == id_estoque).all()
+        return quantidades_estoque
+    
+    def cadastrar_estoque_produto(self, estoque_produto):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DOS PRODUTOS/ESTOQUE NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 12/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(estoque_produto)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar produto(s) no estoque")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Produto(s) cadastrado(s) no estoque com sucesso'

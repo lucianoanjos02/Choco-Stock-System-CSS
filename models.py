@@ -140,8 +140,8 @@ class Estoque(Base):
     id_loja = Column(Integer, ForeignKey('TLoja.id_loja'))
     produtos = relationship("EstoqueProduto", backref=backref('TEstoque'))
 
-    def __init__(self, numero_lote, data_fabricacao, data_validade, total_item, id_loja):
-        self.numero_lote = numero_lote
+    def __init__(self, codigo_lote, total_item, id_loja):
+        self.codigo_lote = codigo_lote
         self.total_item = total_item
         self.id_loja = id_loja
 
