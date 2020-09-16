@@ -79,6 +79,10 @@ class PermissaoDAO:
         for permissao in dados_permissoes:
             permissoes.append(permissao.permissao)
         return permissoes
+    
+    def get_id_permissao(self, permissao):
+        id_permissao = self.__db.query(Permissao.id_permissao).filter(Permissao.permissao == permissao).first()
+        return id_permissao
 
 
 class LojaDAO:

@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_bootstrap import Bootstrap
 from database import db_session
-from forms import LoginForm, CadastroUsuarioForm
+from models import Usuario
+from forms import LoginForm, CadastroUsuarioForm, PermissaoDAO
 from dao import UsuarioDAO
 import os
 import binascii
@@ -20,6 +21,7 @@ login_manager.login_message = "Por favor, faça o login para acessar o sistema!"
 
 #INSTANCIA DO UsuarioDAO
 usuario_dao = UsuarioDAO(db_session)
+permissao_dao = PermissaoDAO(db_session)
 
 #CONFIGURAÇÕES DA APP
 app.config['DEBUG'] = True
@@ -120,7 +122,15 @@ def cadastro_usuario():
     '''
     form = CadastroUsuarioForm()
     if form.validate_on_submit():
-        return render_template('cadastro_usuario.html', form=form)
+        usuario = Usuario(form.nome.data,
+                          form.sobrenome.data,
+                          form.email.data,
+                          form.login.data,
+                          form.senha.data,
+                          permissao_dao.get_id_permissao(form.permissao.data)[0])
+        usuario_dao.cadastrar_usuario(usuario)
+        flash("Usuário cadastrado com sucesso!")
+        return redirect(url_for('dashboard'))
     return render_template('cadastro_usuario.html', form=form)
 
 
