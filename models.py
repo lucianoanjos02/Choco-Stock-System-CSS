@@ -82,18 +82,19 @@ class Loja(Base):
     '''    
     __tablename__ = 'TLoja'
     id_loja = Column(Integer, primary_key=True, autoincrement=True)
-    razao_social = Column(String(100), nullable=False, unique=True)
-    nome_fantasia = Column(String(100), nullable=False, unique=True)
-    cnpj = Column(String(14), nullable=False, unique=True)
+    razao_social = Column(String(100), nullable=False)
+    nome_fantasia = Column(String(100), nullable=False)
+    cnpj = Column(String(14), nullable=False)
     logradouro = Column(String(100), nullable=False)
     numero_logradouro = Column(String(10), nullable=False)
     cep = Column(String(8), nullable=False)
-    inscricao_estadual = Column(String(20), nullable=False, unique=True)
-    email = Column(String(50), nullable=False, unique=True)
+    inscricao_estadual = Column(String(20), nullable=False)
+    email = Column(String(50), nullable=False)
     usuarios = relationship('UsuarioLoja', backref=backref('TLoja'))
     estoque = relationship('Estoque', backref=backref('TLoja'))
 
-    def __init__(self, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email):
+    def __init__(self, id_loja, razao_social, nome_fantasia, cnpj, logradouro, numero_logradouro, cep, inscricao_estadual, email):
+        self.id_loja = id_loja
         self.razao_social = razao_social
         self.nome_fantasia = nome_fantasia
         self.cnpj = cnpj
