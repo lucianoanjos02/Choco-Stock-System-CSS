@@ -74,11 +74,15 @@ class PermissaoDAO:
             @data: 09/08/2020 -
             @versao: 1.0.0
         '''
-        dados_permissoes = self.__db.query(Permissao.permissao).all()
+        dados_permissoes = self.__db.query(Permissao).all()
         permissoes = []
         for permissao in dados_permissoes:
-            permissoes.append(permissao)
+            permissoes.append(permissao.permissao)
         return permissoes
+    
+    def get_id_permissao(self, permissao):
+        id_permissao = self.__db.query(Permissao.id_permissao).filter(Permissao.permissao == permissao).first()
+        return id_permissao
 
 
 class TipoProdutoDAO:
@@ -101,11 +105,15 @@ class TipoProdutoDAO:
             @data: 15/09/2020 -
             @versao: 1.0.0
         '''
-        info_tipos_produto = self.__db.query(TipoProduto.tipo).all()
+        info_tipos_produto = self.__db.query(TipoProduto).all()
         tipos_produto = []
-        for tipo in tipos_produto:
-            tipos_produto.append(tipo)
+        for tipo in info_tipos_produto:
+            tipos_produto.append(tipo.tipo)
         return tipos_produto
+    
+    def get_id_tipo(self, tipo):
+        id_tipo = self.__db.query(TipoProduto.id).filter(TipoProduto.tipo == tipo).first()
+        return id_tipo
 
 
 class LojaDAO:
@@ -171,6 +179,24 @@ class ProdutoDAO:
         '''
         id_produto = self.__db.query(Produto).filter(Produto.nome == nome_produto).first()
         return id_produto.id_produto
+    
+    def cadastrar_produto(self, produto):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DO PRODUTO NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(produto)
+            self.__db.commit()
+        except:
+            print("Erro ao cadastrar produto")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Produto cadastrado com sucesso'
 
 
 class EstoqueDAO:

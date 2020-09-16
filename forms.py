@@ -37,15 +37,3 @@ class CadastroUsuarioForm(FlaskForm):
     senha = StringField('Senha', validators=[InputRequired(), Length(max=10)])
     permissao = SelectField('Permissão', choices=permissao_dao.get_permissoes()) 
 
-
-class CadastroProdutoForm(FlaskForm):
-    '''
-        CLASSE CadastroProdutoForm - MAPEIA O FORMULÁRIO DE LOGIN DA VIEW cadastro_produto.html
-
-        @autor: Luciano Gomes Vieira dos Anjos -
-        @data: 15/08/2020 -
-        @versao: 1.0.0
-    '''
-    nome = StringField('Login', validators=[InputRequired(), Length(max=50)])
-    preco = DecimalField('Preço')
-    tipo = SelectField('Tipo', choices=tipo_produto_dao.get_tipos_produto())

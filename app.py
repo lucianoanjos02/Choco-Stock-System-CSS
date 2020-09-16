@@ -2,9 +2,9 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_bootstrap import Bootstrap
 from database import db_session
-from forms import LoginForm, CadastroUsuarioForm, CadastroProdutoForm
-from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO
-from models import Estoque, EstoqueProduto
+from forms import LoginForm, CadastroUsuarioForm
+from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO
+from models import Estoque, EstoqueProduto, Produto
 import os
 import binascii
 
@@ -23,6 +23,7 @@ login_manager.login_message = "Por favor, faça o login para acessar o sistema!"
 usuario_dao = UsuarioDAO(db_session)
 loja_dao = LojaDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
+tipo_produto_dao = TipoProdutoDAO(db_session)
 estoque_dao = EstoqueDAO(db_session)
 estoque_produto_dao = EstoqueProdutoDAO(db_session)
 
@@ -180,12 +181,26 @@ def cadastrar_estoque():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/produtos/cadastro', methods=['GET', 'POST'])
-def cadastro_produto():
-    form = CadastroProdutoForm()
-    if form.validate_on_submit():
-        return render_template('cadastro_produto.html', form=form)
-    return render_template('cadastro_produto.html', form=form)
+@app.route('/produtos/cadastro', methods=['GET'])
+def form_cadastro_produto():
+    return render_template('cadastro_produto.html', tipos_produto=tipo_produto_dao.get_tipos_produto())
+
+
+@app.route('/cadastrar_produto', methods=['POST'])
+def cadastrar_produto():
+    info_produto = []
+    for field in request.form.values():
+        info_produto.append(field)
+    print(info_produto)
+    produto = Produto(info_produto[0],
+                      info_produto[1],
+                      tipo_produto_dao.get_id_tipo(info_produto[2])[0])
+    print(produto.nome)
+    print(produto.preco)
+    print(produto.tipo)
+    produto_dao.cadastrar_produto(produto)
+    flash("Produto cadastrado com sucesso!")
+    return redirect(url_for('dashboard'))
 
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 

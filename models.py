@@ -164,8 +164,8 @@ class Produto(Base):
     kit = relationship('KitProduto', backref=backref('TProduto'))
 
     def __init__(self, nome_produto, preco_produto, id_tipo):
-        self.nome_produto = nome_produto
-        self.preco_produto = preco_produto
+        self.nome = nome_produto
+        self.preco = preco_produto
         self.id_tipo = id_tipo
 
 
