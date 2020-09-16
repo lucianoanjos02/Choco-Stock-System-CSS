@@ -111,7 +111,12 @@ def logout():
 @app.route('/usuario/cadastro', methods=['GET', 'POST'])
 def cadastro_usuario():
     '''
+    ROTA UTILIZADA PARA REALIZAR O CADASTRO DO USUÁRIO DA APLICAÇÃO
 
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 07/09/2020 -
+    @URL: http://localhost:5000/usuario/cadastro -
+    @versao: 1.0.0
     '''
     form = CadastroUsuarioForm()
     if form.validate_on_submit():
