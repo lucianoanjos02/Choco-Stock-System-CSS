@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_bootstrap import Bootstrap
 from database import db_session
-from forms import LoginForm, CadastroUsuarioForm
+from forms import LoginForm, CadastroUsuarioForm, CadastroProdutoForm
 from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO
 from models import Estoque, EstoqueProduto
 import os
@@ -178,6 +178,14 @@ def cadastrar_estoque():
     estoque_dao.update_total_item(total_item, estoque_dao.get_ultimo_estoque_id())
     flash("Produtos cadastro em estoque com sucesso!")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/produtos/cadastro', methods=['GET', 'POST'])
+def cadastro_produto():
+    form = CadastroProdutoForm()
+    if form.validate_on_submit():
+        return render_template('cadastro_produto.html', form=form)
+    return render_template('cadastro_produto.html', form=form)
 
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 

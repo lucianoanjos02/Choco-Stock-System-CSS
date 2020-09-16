@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto
+from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto, TipoProduto
 
 class UsuarioDAO:
     '''
@@ -74,11 +74,38 @@ class PermissaoDAO:
             @data: 09/08/2020 -
             @versao: 1.0.0
         '''
-        dados_permissoes = self.__db.query(Permissao).all()
+        dados_permissoes = self.__db.query(Permissao.permissao).all()
         permissoes = []
         for permissao in dados_permissoes:
-            permissoes.append(permissao.permissao)
+            permissoes.append(permissao)
         return permissoes
+
+
+class TipoProdutoDAO:
+    '''
+        CLASSE TipoProdutoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        TipoProduto DO MÓDULO models.py QUE MAPEIA A TABELA TTipoProduto
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 15/09/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def get_tipos_produto(self):
+        '''
+            METODO QUE RETORNA OS TIPOS DE PRODUTO REGISTRADAS NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 15/09/2020 -
+            @versao: 1.0.0
+        '''
+        info_tipos_produto = self.__db.query(TipoProduto.tipo).all()
+        tipos_produto = []
+        for tipo in tipos_produto:
+            tipos_produto.append(tipo)
+        return tipos_produto
 
 
 class LojaDAO:

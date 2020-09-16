@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SelectField, IntegerField, DateField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, IntegerField, DateField, DecimalField
 from wtforms.validators import Email, Length, InputRequired, NumberRange
-from dao import PermissaoDAO, LojaDAO, ProdutoDAO
+from dao import PermissaoDAO, LojaDAO, ProdutoDAO, TipoProdutoDAO
 from database import db_session
 
 permissao_dao = PermissaoDAO(db_session)
 loja_dao = LojaDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
+tipo_produto_dao = TipoProdutoDAO(db_session)
 
 
 class LoginForm(FlaskForm):
@@ -36,3 +37,15 @@ class CadastroUsuarioForm(FlaskForm):
     senha = StringField('Senha', validators=[InputRequired(), Length(max=10)])
     permissao = SelectField('Permissão', choices=permissao_dao.get_permissoes()) 
 
+
+class CadastroProdutoForm(FlaskForm):
+    '''
+        CLASSE CadastroProdutoForm - MAPEIA O FORMULÁRIO DE LOGIN DA VIEW cadastro_produto.html
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 15/08/2020 -
+        @versao: 1.0.0
+    '''
+    nome = StringField('Login', validators=[InputRequired(), Length(max=50)])
+    preco = DecimalField('Preço')
+    tipo = SelectField('Tipo', choices=tipo_produto_dao.get_tipos_produto())
