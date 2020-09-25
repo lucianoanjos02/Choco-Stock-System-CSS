@@ -213,8 +213,8 @@ class ProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto cadastrado com sucesso'
-
-
+    
+    
 class EstoqueDAO:
     '''
         CLASSE EstoqueDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
@@ -318,6 +318,24 @@ class EstoqueProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto(s) cadastrado(s) no estoque com sucesso'
+
+    def remover_estoque_produto(self, estoque_produto):
+        '''
+            METODO QUE REMOVE QTDADE DE PRODUTOS/ESTOQUE NO BANCO
+
+            @autor: Gabriel Oliveira Gonçalves -
+            @data: 25/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.delete(estoque_produto)
+            self.__db.commit()
+        except:
+            print("Produto não encontrado no estoque")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Produto(s) removido(s) do estoque com sucesso'
 
 
 class KitDAO:

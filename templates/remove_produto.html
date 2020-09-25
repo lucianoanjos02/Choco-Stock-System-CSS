@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_loja.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/remove_produto.css')}}">
 {% endblock %}
 
 {% block title %}
-    Cadastro de Loja - CSS
+    Remover Produtos - CSS
 {% endblock %}
 
 {% block content %}
@@ -48,7 +48,6 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_produto') }}">Cadastro de Produto</a>
                             <a class="navbar-brand" href="{{ url_for('form_remove_produto') }}">Remoção de Produto</a>
                         </li>
                     </ul>
@@ -105,50 +104,29 @@
                 </button>
             </div>
         {% endfor %}
-    </div>
     {% endif %}
     {% endwith %}
 </div>
     <div class="container">
-        <form class="form-horizontal" name="formLoja" action="{{ url_for('cadastrar_loja') }}" method="POST">
-            <h1>Cadastro de Loja</h1>
+        <form class="form-horizontal" action="{{ url_for('cadastrar_produto') }}" method="POST">
+            <h1>Remoção de Produto</h1>
             <div class="form-group required">
-                <label class="control-label" for="id_loja">Código da Loja</label>
-                <input class="form-control" id="id_loja" name="id_loja" required type="text">
+                <label class="control-label" for="nome">Nome do Produto</label>
+                <input class="form-control" id="nome" name="nome" required type="text">
             </div>
             <div class="form-group required">
-                <label class="control-label" for="razao_social">Razão Social</label>
-                <input class="form-control" id="razao_social" name="razao_social" required type="text">
+                <label class="control-label" for="preco">Quantidade</label>
+                <input class="form-control" id="preco" name="preco" required type="number" step=".01">     
             </div>
-            <div class="form-group required">
-                <label class="control-label" for="nome_fantasia">Nome Fantásia</label>
-                <input class="form-control" id="nome_fantasia" name="nome_fantasia" required type="text">
+            <div class="form-group">
+                <label class="control-label" for="tipo">Tipo</label>
+                <select class="form-control" id="tipo" name="tipo">
+                    {% for tipo in tipos_produto %}
+                        <option value={{ tipo }}>{{ tipo }}</option>
+                    {% endfor %} 
+                </select>   
             </div>
-            <div class="form-group required">
-                <label class="control-label" for="cnpj">CNPJ</label>
-                <input class="form-control" id="cnpj" name="cnpj" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="logradouro">Logradouro</label>
-                <input class="form-control" id="logradouro" name="logradouro" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="numero_logradouro">Nº </label>
-                <input class="form-control" id="numero_logradouro" name="numero_logradouro" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="cep">CEP</label>
-                <input class="form-control" id="cep" name="cep" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="inscricao_estadual">Inscrição Estadual</label>
-                <input class="form-control" id="inscricao_estadual" name="inscricao_estadual" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="email">E-mail</label>
-                <input class="form-control" id="email" name="email" required type="text">
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Remover Produto</button>
         </form>
     </div>
 {% endblock %}
