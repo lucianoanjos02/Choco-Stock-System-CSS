@@ -34,6 +34,19 @@ class UsuarioDAO:
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.login == login).first()
         return usuario
+    
+    def get_emails(self):
+        '''
+            METODO QUE RETORNA UMA LISTA DE E-MAILS DOS USUÁRIOS CADASTRADOS NO BANCO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        emails = self.__db.query(Usuario.email).all()
+        lista_emails = []
+        for email in emails:
+            lista_emails.append(email.email)
+        return lista_emails
 
     def cadastrar_usuario(self, usuario):
         '''
@@ -171,9 +184,21 @@ class ProdutoDAO:
     def __init__(self, db):
         self.__db = db_session
     
+    def get_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA O NOME DO PRODUTO REGISTRADAS NO BANCO.
+            ESSE MÉTODO UTILIZA O ID DO PRODUTO COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 09/08/2020 -
+            @versao: 1.0.0
+        '''
+        produto = self.__db.query(Produto.nome).filter(Produto.id_produto == id_produto).first()
+        return produto
+    
     def get_produtos(self):
         '''
-            METODO QUE RETORNA O NOME DOS PRODUTOS REGISTRADAS NO BANCO
+            METODO QUE RETORNA UMA LISTA DE NOMES DOS PRODUTOS REGISTRADAS NO BANCO
 
             @autor: Luciano Gomes Vieira dos Anjos -
             @data: 09/08/2020 -
@@ -245,6 +270,19 @@ class EstoqueDAO:
             self.__db.close()
         return 'Estoque cadastrado com sucesso'
     
+    def get_codigo_lote(self, id_estoque):
+        '''
+            METODO QUE RETORNA O CÓDIGO DO LOTE.
+            ESSE MÉTODO RECEBE O ID DO ESTOQUE CADASTRADO NO SISTEMA
+            COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        codigo_lote = self.__db.query(Estoque.codigo_lote).filter(Estoque.id_estoque == id_estoque).first()
+        return codigo_lote
+    
     def get_ultimo_estoque_id(self):
         '''
             METODO QUE RETORNA O ID DO ÚLTIMO LOTE DO ESTOQUE CADASTRADO NO SISTEMA
@@ -298,8 +336,8 @@ class EstoqueProdutoDAO:
             @data: 27/09/2020 -
             @versao: 1.0.0
         '''
-        quantidades_estoque = self.__db.query(EstoqueProduto.quantidade_produto).filter(EstoqueProduto.fk_id_estoque == id_estoque).all()
-        return quantidades_estoque
+        estoque_produtos = self.__db.query(EstoqueProduto).all()
+        return estoque_produtos
 
     def get_quantidade_produtos(self, id_estoque):
         '''
