@@ -289,6 +289,18 @@ class EstoqueProdutoDAO:
     def __init__(self, db):
         self.__db = db_session
 
+    def get_estoque_produtos(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE PRODUTOS CADASTRADOS
+            EM ESTOQUE
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        quantidades_estoque = self.__db.query(EstoqueProduto.quantidade_produto).filter(EstoqueProduto.fk_id_estoque == id_estoque).all()
+        return quantidades_estoque
+
     def get_quantidade_produtos(self, id_estoque):
         '''
             METODO QUE RETORNA AS QUANTIDADES DOS PRODUTOS CADASTRADOS
