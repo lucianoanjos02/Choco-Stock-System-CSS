@@ -235,36 +235,6 @@ def cadastrar_produto():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/produtos/remover', methods=['DELETE'])
-@login_required
-def form_remove_produto():
-    '''
-    ROTA QUE RETORNA A VIEW DE REMOÇÃO DE PRODUTO (remove_produto.html)
-
-    -SÃO PASSADOS OS DADOS DE PRODUTOS PARA O CAMPOS SELECT DA VIEW NA
-    RENDERIZAÇÃO DELA.
-
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 25/09/2020 -
-    @URL: http://localhost:5000/produtos/remover - 
-    @versao: 1.0.0
-    '''
-    return render_template('remove_produto.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos())
-
-
-@app.route('/remover_produto', methods=['DELETE'])
-@login_required
-def remover_produto():
-    '''
-    ROTA QUE EXECUTA TODA A LÓGICA DE REMOÇÃO DE PRODUTO
-
-    @autor: Gabriel Oliveira Gonçalves -
-    @data: 24/09/2020 -
-    @URL: http://localhost:5000/remover_produto - 
-    @versao: 1.0.0
-    '''
-
-
 @app.route('/kit/cadastro', methods=['GET'])
 @login_required
 def form_cadastro_kit():
@@ -353,6 +323,27 @@ def cadastrar_loja():
     flash("Loja cadastrada com sucesso!")
     return redirect(url_for('dashboard'))
 
+
+@app.route('/estoque/gerenciamento', methods=['GET','POST'])
+@login_required
+def form_gerenciamento_estoque():
+    '''
+    ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE ESTOQUE (gerenciamento_estoque.html)
+    '''
+    return render_template('gerenciamento_estoque.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos())
+
+
+@app.route('/editar_estoque', methods=['GET','POST'])
+@login_required
+def editarr_estoque():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE ATUALIZAÇÃO DA QUANTIDADE DE PRODUTOS EM ESTOQUE
+
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 05/10/2020 -
+    @URL: http://localhost:5000/editar_estoque - 
+    @versao: 1.0.0
+    '''
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO

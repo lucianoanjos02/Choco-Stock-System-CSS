@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Cadastro de Estoque - CSS
+    Gerenciamento de Estoque - CSS
 {% endblock %}
 
 {% block content %}
@@ -110,11 +110,7 @@
 </div>
     <div class="container">
         <form name="formEstoque" class="form-horizontal" action="{{ url_for('cadastrar_estoque') }}" method="POST">
-            <h1>Cadastro de Estoque</h1>
-            <div class="form-group  required">
-                <label class="control-label" for="codigo_lote">Código do Lote</label>
-                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value=""> 
-            </div>
+            <h1>Gerenciamento de Estoque</h1>
             <div class="form-group">
                 <label class="control-label" for="loja">Loja</label> 
                 <select class="form-control" id="loja" name="loja">
@@ -125,9 +121,9 @@
             </div>
             <div class="container" id="produtos">
                 <div class="container info-produto" id="info-produto1">
-                    <div class="col-xs-6">
-                        <div class="form-group ">
-                            <label class="control-label" for="produto1">Produto</label> 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="produto1">Nome do Produto</label> 
                             <select class="form-control produto" id="produto1" name="produto1">
                                 {% for produto in produtos %}
                                     <option value={{ produto }}>{{ produto }}</option>
@@ -135,19 +131,19 @@
                             </select>
                         </div>    
                     </div>
-                    <div class="col-xs-6">
+                    <div class="col-md-6">
+                        <div class="form-group  required">
+                            <label class="control-label" for="codigo_lote">Código do Lote</label>
+                            <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value=""> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group  required">
                             <label class="control-label" for="quantidade1">Quantidade</label>
                             <input class="form-control" id="quantidade1" name="quantidade1" required type="number">
                         </div>
                     </div>
-                    <div class="col-xs-6">
-                        <div class="form-group  required">
-                            <label class="control-label" for="data_fabricacao1">Data de Fabricação</label>
-                            <input class="form-control" id="data_fabricacao1" name="data_fabricacao1" required type="date">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
+                    <div class="col-md-6">
                         <div class="form-group  required">
                             <label class="control-label" for="data_validade1">Data de Validade</label>
                             <input class="form-control" id="data_validade1" name="data_validade1" required type="date">
@@ -170,7 +166,7 @@
                 </div> 
             </div>
             <div class="col-xs-4">
-                <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Cadastrar</button>
+                <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Atualizar</button>
             </div>
         </form>
     </div>
