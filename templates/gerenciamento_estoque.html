@@ -109,7 +109,7 @@
     {% endwith %}
 </div>
     <div class="container">
-        <form name="formEstoque" class="form-horizontal" action="{{ url_for('cadastrar_estoque') }}" method="POST">
+        <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_estoque') }}" method="POST">
             <h1>Gerenciamento de Estoque</h1>
             <div class="form-group">
                 <label class="control-label" for="loja">Loja</label> 
@@ -119,8 +119,22 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="form-group required">
+                <label class="control-label" for="codigo_lote">Código do Lote</label>
+                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value=""> 
+            </div>
             <div class="container" id="produtos">
                 <div class="container info-produto" id="info-produto1">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="tipo">Tipo</label>
+                            <select class="form-control" id="tipo" name="tipo">
+                                {% for tipo in tipos_produto %}
+                                    <option value={{ tipo }}>{{ tipo }}</option>
+                                {% endfor %} 
+                            </select>   
+                        </div>  
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label" for="produto1">Nome do Produto</label> 
@@ -130,12 +144,6 @@
                                 {% endfor %}
                             </select>
                         </div>    
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group  required">
-                            <label class="control-label" for="codigo_lote">Código do Lote</label>
-                            <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value=""> 
-                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group  required">

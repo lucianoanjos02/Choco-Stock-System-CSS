@@ -330,12 +330,12 @@ def form_gerenciamento_estoque():
     '''
     ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE ESTOQUE (gerenciamento_estoque.html)
     '''
-    return render_template('gerenciamento_estoque.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos())
+    return render_template('gerenciamento_estoque.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos(), tipos_produto=tipo_produto_dao.get_tipos_produto())
 
 
 @app.route('/editar_estoque', methods=['GET','POST'])
 @login_required
-def editarr_estoque():
+def editar_estoque():
     '''
     ROTA QUE EXECUTA TODA A LÓGICA DE ATUALIZAÇÃO DA QUANTIDADE DE PRODUTOS EM ESTOQUE
 
