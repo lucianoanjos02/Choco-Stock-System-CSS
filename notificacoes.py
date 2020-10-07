@@ -1,17 +1,18 @@
 import smtplib
 from email.message import EmailMessage
 from database import db_session
-from dao import EstoqueProdutoDAO, EstoqueDAO, ProdutoDAO, UsuarioDAO
+from models import Notificacao
+from dao import EstoqueProdutoDAO, EstoqueDAO, ProdutoDAO, UsuarioDAO, NotificacaoDAO
 from datetime import datetime, timedelta
 
 usuario_dao = UsuarioDAO(db_session)
 estoque_dao = EstoqueDAO(db_session)
 estoque_produto_dao = EstoqueProdutoDAO(db_session)
 produto_dao = ProdutoDAO(db_session)
+notificacao_dao = NotificacaoDAO(db_session)
+
 
 def atualiza_notificacoes_data_validade():
-    #pegar datas de validade que passsaram de 60 dias
-    #popular a tabela das notificacoes com as informaçoes
     produtos_notificacao = []
     produtos = estoque_produto_dao.get_estoque_produtos()
     for produto in produtos:
@@ -20,14 +21,32 @@ def atualiza_notificacoes_data_validade():
         if dias_validade.days <= 60:
             produtos_notificacao.append(produto)
     for produto in produtos_notificacao:
-        
+        notificacao = Notificacao(f"Alerta de Data de Validade",
+                                  f"Produto: {produto_dao.get_produto(produto.fk_id_produto)[0]} - Lote: {estoque_dao.get_codigo_lote(produto.fk_id_estoque)[0]} - Data de Validade: {produto.data_validade.day}/{produto.data_validade.month}/{produto.data_validade.year}",
+                                  datetime.now(),
+                                  produto.id,
+                                  1)
+        notificacao_dao.registra_notificacao(notificacao)
 
 
 def atualiza_notificacoes_quantidade_produto():
-    #pegar produtos que estão com quantidade igual ou menor à 50
-    #popular a tabela das notificacoes com as informaçoes
+    produtos_notificacao = []
+    produtos = estoque_produto_dao.get_estoque_produtos()
+    for produto in produtos:
+        if produto.quantidade_produto <= 60:
+            produtos_notificacao.append(produto)
+    for produto in produtos_notificacao:
+        notificacao = Notificacao(f"Alerta de Quantidade de Produto",
+                                  f"""Produto: {produto_dao.get_produto(produto.fk_id_produto)[0]} - 
+                                  Lote: {estoque_dao.get_codigo_lote(produto.fk_id_estoque)[0]} - 
+                                  Quantidade: {produto.quantidade_produto}""",
+                                  datetime.now(),
+                                  produto.id,
+                                  2)
+        notificacao_dao.registra_notificacao(notificacao)
 
-def notificacao_email():
+
+def notificacao_email_data_validade():
     produtos_alerta = []
     produtos = estoque_produto_dao.get_estoque_produtos()
     for produto in produtos:
