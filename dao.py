@@ -34,6 +34,19 @@ class UsuarioDAO:
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.login == login).first()
         return usuario
+    
+    def get_emails(self):
+        '''
+            METODO QUE RETORNA UMA LISTA DE E-MAILS DOS USUÁRIOS CADASTRADOS NO BANCO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        emails = self.__db.query(Usuario.email).all()
+        lista_emails = []
+        for email in emails:
+            lista_emails.append(email.email)
+        return lista_emails
 
     def cadastrar_usuario(self, usuario):
         '''
@@ -109,6 +122,17 @@ class TipoProdutoDAO:
             tipos_produto.append(tipo.tipo)
         return tipos_produto
     
+    def get_tipo_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA O TIPO DE UM PRODUTO REGISTRADO NO BANCO.
+            ESSE MÉTODO RECEBE O ID DO PRODUTO COMO PARÂMETRO.
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 03/10/2020 -
+            @versao: 1.0.0
+        '''
+        tipo_produto = self.__db.query(TipoProduto.tipo).first()
+        return tipo_produto
+    
     def get_id_tipo(self, tipo):
         id_tipo = self.__db.query(TipoProduto.id).filter(TipoProduto.tipo == tipo).first()
         return id_tipo
@@ -171,9 +195,21 @@ class ProdutoDAO:
     def __init__(self, db):
         self.__db = db_session
     
+    def get_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA O NOME DO PRODUTO REGISTRADAS NO BANCO.
+            ESSE MÉTODO UTILIZA O ID DO PRODUTO COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 09/08/2020 -
+            @versao: 1.0.0
+        '''
+        produto = self.__db.query(Produto.nome).filter(Produto.id_produto == id_produto).first()
+        return produto
+    
     def get_produtos(self):
         '''
-            METODO QUE RETORNA O NOME DOS PRODUTOS REGISTRADAS NO BANCO
+            METODO QUE RETORNA UMA LISTA DE NOMES DOS PRODUTOS REGISTRADAS NO BANCO
 
             @autor: Luciano Gomes Vieira dos Anjos -
             @data: 09/08/2020 -
@@ -213,8 +249,8 @@ class ProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto cadastrado com sucesso'
-    
-    
+
+
 class EstoqueDAO:
     '''
         CLASSE EstoqueDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
@@ -244,6 +280,31 @@ class EstoqueDAO:
         finally:
             self.__db.close()
         return 'Estoque cadastrado com sucesso'
+    
+    def get_codigo_lote(self, id_estoque):
+        '''
+            METODO QUE RETORNA O CÓDIGO DO LOTE.
+            ESSE MÉTODO RECEBE O ID DO ESTOQUE CADASTRADO NO SISTEMA
+            COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        codigo_lote = self.__db.query(Estoque.codigo_lote).filter(Estoque.id_estoque == id_estoque).first()
+        return codigo_lote
+    
+    def get_estoques(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 01/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).all()
+        return estoque
     
     def get_ultimo_estoque_id(self):
         '''
@@ -289,6 +350,18 @@ class EstoqueProdutoDAO:
     def __init__(self, db):
         self.__db = db_session
 
+    def get_estoque_produtos(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE PRODUTOS CADASTRADOS
+            EM ESTOQUE
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        estoque_produtos = self.__db.query(EstoqueProduto).all()
+        return estoque_produtos
+
     def get_quantidade_produtos(self, id_estoque):
         '''
             METODO QUE RETORNA AS QUANTIDADES DOS PRODUTOS CADASTRADOS
@@ -318,24 +391,6 @@ class EstoqueProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto(s) cadastrado(s) no estoque com sucesso'
-
-    def editar_estoque_produto(self, estoque_produto):
-        '''
-            METODO QUE ATUALIZA QTDADE DE PRODUTOS/ESTOQUE NO BANCO
-
-            @autor: Gabriel Oliveira Gonçalves -
-            @data: 25/09/2020 -
-            @versao: 1.0.0
-        '''
-        try:
-            self.__db.update(estoque_produto)
-            self.__db.commit()
-        except:
-            print("Produto não encontrado no estoque")
-            self.__db.rollback()
-        finally:
-            self.__db.close()
-        return 'Quantidade de Produto(s) em estoque atualizada com sucesso'
 
 
 class KitDAO:
