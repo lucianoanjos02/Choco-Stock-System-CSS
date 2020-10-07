@@ -403,3 +403,45 @@ class KitProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto(s) do kit cadastrado(s) com sucesso'
+
+
+class NotificacaoDAO:
+    '''
+        CLASSE NotificacaoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        Notificacao DO MÓDULO models.py QUE MAPEIA A TABELA TNotificacao
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 01/10/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def registra_notificacao(self, notificacao):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DA NOTIFICAÇÃO NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 01/10/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(notificacao)
+            self.__db.commit()
+        except:
+            print("Erro ao registrar notificação")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Notificação registrada com sucesso'
+    
+    # def get_ultimo_kit_id(self):
+    #     '''
+    #         METODO QUE RETORNA O ID DO ÚLTIMO KIT CADASTRADO NO SISTEMA
+
+    #         @autor: Luciano Gomes Vieira dos Anjos -
+    #         @data: 15/09/2020 -
+    #         @versao: 1.0.0
+    #     '''
+    #     kit = self.__db.query(Kit).order_by(Kit.id_kit.desc()).first()
+    #     return kit.id_kit
