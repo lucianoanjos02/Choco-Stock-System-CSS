@@ -7,6 +7,7 @@ from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, 
 from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja, Usuario
 import os
 import binascii
+import pprint
 
 
 app = Flask(__name__) #INSTANCIA DO PROJETO FLASK
@@ -324,13 +325,33 @@ def cadastrar_loja():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/estoque/gerenciamento', methods=['GET','POST'])
+@app.route('/estoque/gerenciamento', methods=['GET'])
 @login_required
 def form_gerenciamento_estoque():
     '''
     ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE ESTOQUE (gerenciamento_estoque.html)
     '''
-    return render_template('gerenciamento_estoque.html', produtos=produto_dao.get_produtos(), tipos_produto=tipo_produto_dao.get_tipos_produto())
+    produtos_estoque = estoque_produto_dao.get_estoque_produtos()
+    estoques = estoque_dao.get_estoques()
+    lista_lotes = []
+    count_lote = 1
+    estoque = {}
+    for lote in estoques:
+        estoque[f'lote{count_lote}'] = {}
+        estoque[f'lote{count_lote}']['codigo_lote'] = lote.codigo_lote
+        estoque[f'lote{count_lote}']['loja'] = lote.id_loja
+        estoque[f'lote{count_lote}']['produtos'] = {}
+        count_produto = 1
+        for produto in produtos_estoque:
+            if lote.id_estoque == produto.fk_id_estoque:
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}'] = {}
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['produto'] = produto_dao.get_produto(produto.fk_id_produto)[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto.fk_id_produto)[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['quantidade'] = produto.quantidade_produto
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['data_validade'] = produto.data_validade
+            count_produto += 1
+        count_lote += 1
+    return render_template('gerenciamento_estoque.html', estoque=estoque)
 
 
 @app.route('/editar_estoque', methods=['GET','POST'])
@@ -344,6 +365,7 @@ def editar_estoque():
     @URL: http://localhost:5000/editar_estoque - 
     @versao: 1.0.0
     '''
+    pass
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO
