@@ -122,6 +122,17 @@ class TipoProdutoDAO:
             tipos_produto.append(tipo.tipo)
         return tipos_produto
     
+    def get_tipo_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA O TIPO DE UM PRODUTO REGISTRADO NO BANCO.
+            ESSE MÉTODO RECEBE O ID DO PRODUTO COMO PARÂMETRO.
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 03/10/2020 -
+            @versao: 1.0.0
+        '''
+        tipo_produto = self.__db.query(TipoProduto.tipo).first()
+        return tipo_produto
+    
     def get_id_tipo(self, tipo):
         id_tipo = self.__db.query(TipoProduto.id).filter(TipoProduto.tipo == tipo).first()
         return id_tipo
@@ -282,6 +293,18 @@ class EstoqueDAO:
         '''
         codigo_lote = self.__db.query(Estoque.codigo_lote).filter(Estoque.id_estoque == id_estoque).first()
         return codigo_lote
+    
+    def get_estoques(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 01/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).all()
+        return estoque
     
     def get_ultimo_estoque_id(self):
         '''
