@@ -5,7 +5,7 @@ class UsuarioDAO:
     '''
         CLASSE UsuarioDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
         Usuario DO MÓDULO models.py QUE MAPEIA A TABELA TUsuario
-        
+
         @autor: Luciano Gomes Vieira dos Anjos -
         @data: 26/08/2020 -
         @versao: 1.0.0
@@ -187,6 +187,7 @@ class ProdutoDAO:
     '''
         CLASSE ProdutoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
         Produto DO MÓDULO models.py QUE MAPEIA A TABELA TProduto
+
         @autor: Luciano Gomes Vieira dos Anjos -
         @data: 09/08/2020 -
         @versao: 1.0.0
@@ -254,6 +255,7 @@ class EstoqueDAO:
     '''
         CLASSE EstoqueDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
         Estoque DO MÓDULO models.py QUE MAPEIA A TABELA TEstoque
+
         @autor: Luciano Gomes Vieira dos Anjos -
         @data: 09/08/2020 -
         @versao: 1.0.0
@@ -284,7 +286,7 @@ class EstoqueDAO:
             METODO QUE RETORNA O CÓDIGO DO LOTE.
             ESSE MÉTODO RECEBE O ID DO ESTOQUE CADASTRADO NO SISTEMA
             COMO PARÂMETRO
-            
+
             @autor: Luciano Gomes Vieira dos Anjos -
             @data: 27/09/2020 -
             @versao: 1.0.0
@@ -340,6 +342,7 @@ class EstoqueProdutoDAO:
     '''
         CLASSE EstoqueProdutoDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
         EstoqueProduto DO MÓDULO models.py QUE MAPEIA A TABELA TEstoque_Produto
+
         @autor: Luciano Gomes Vieira dos Anjos -
         @data: 12/09/2020 -
         @versao: 1.0.0

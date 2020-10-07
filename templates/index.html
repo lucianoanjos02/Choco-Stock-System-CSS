@@ -129,3 +129,8 @@
     {% endwith %}
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
+{{ super() }}
+{% endblock %}
