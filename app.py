@@ -5,6 +5,7 @@ from database import db_session
 from forms import LoginForm, CadastroUsuarioForm
 from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO, PermissaoDAO
 from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja, Usuario
+from rotina_envio_notificacoes import envia_notificao_email
 import os
 import binascii
 
@@ -328,3 +329,4 @@ def cadastrar_loja():
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)
+    envia_notificao_email()
