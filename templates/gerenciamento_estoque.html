@@ -38,6 +38,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a class="navbar-brand" href="{{ url_for('form_cadastro_estoque') }}">Cadastro de Estoque</a>
+                            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_estoque') }}">Gerenciamento de Estoque</a>
                         </li>
                     </ul>
                 </li>
@@ -187,6 +188,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/cadastro_estoque.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
 {{ super() }}
 {% endblock %}
