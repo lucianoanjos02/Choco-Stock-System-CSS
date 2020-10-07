@@ -89,7 +89,28 @@
             <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
                 <button type="submit" class="btn btn-success">Sair</button>
             </form>
-            <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+            <div class="dropdown notification-dropdown">
+                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="glyphicon glyphicon-bell"></i><span class="counter counter-lg">10</span>&nbsp;&nbsp;     
+                </a>
+                <ul class="dropdown-menu notifications" role="menu">
+                    <div class="notification-heading"><h4 class="menu-title">Notificações</h4><h4 class="menu-title pull-right">Ver tudo<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                        <li class="divider"></li>
+                        <div class="notification-wrapper">
+                            <a class="content" href="#">
+                                <div class="notification-item">
+                                    <h4 class="item-title"></h4>
+                                    <p class="item-info"></p>
+                                </div>
+                            </a>
+                        </div>
+                        <li class="divider"></li>
+                        <div class="notification-footer"><h4 class="menu-title">Ver tudo<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                    </div>
+                </ul>
+                <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+            </div>
+            
       </div>
     </div>
 </nav>

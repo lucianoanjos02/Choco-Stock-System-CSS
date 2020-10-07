@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_produto.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/gerenciamento_estoque.css')}}">
 {% endblock %}
 
 {% block title %}
-    Cadastro de Produto - CSS
+    Gerenciamento de Estoque - CSS
 {% endblock %}
 
 {% block content %}
@@ -129,25 +129,64 @@
     {% endwith %}
 </div>
     <div class="container">
-        <form class="form-horizontal" action="{{ url_for('cadastrar_produto') }}" method="POST">
-            <h1>Cadastro de Produto</h1>
-            <div class="form-group required">
-                <label class="control-label" for="nome">Nome do Produto</label>
-                <input class="form-control" id="nome" name="nome" required type="text">
-            </div>
-            <div class="form-group required">
-                <label class="control-label" for="preco">Preço</label>
-                <input class="form-control" id="preco" name="preco" required type="number" step=".01">     
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="tipo">Tipo</label>
-                <select class="form-control" id="tipo" name="tipo">
-                    {% for tipo in tipos_produto %}
-                        <option value={{ tipo }}>{{ tipo }}</option>
-                    {% endfor %} 
-                </select>   
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
-        </form>
+        <h1>Gerenciamento de Estoque</h1>
+        {% for lote in estoque.values() %}
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_estoque') }}" method="POST">
+                <div class="container" id="produtos">
+                    <div class="container info-produto" id="info-produto1">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="loja">Loja</label> 
+                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lote['loja'] }}" readonly=“true”>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label" for="codigo_lote">Código do Lote</label>
+                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lote['codigo_lote'] }}" readonly=“true”> 
+                            </div>
+                        </div>
+                        {% for produto in lote['produtos'].values() %}
+                            <div class="container produtos">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="tipo">Tipo</label>
+                                        <input class="form-control" id="tipo" name="tipo" required type="text" value="{{ produto['tipo'] }}" readonly=“true”>   
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="produto1">Nome do Produto</label> 
+                                        <input class="form-control" id="produto1" name="produto1" required type="text" value="{{ produto['produto'] }}" readonly=“true”>   
+                                    </div>    
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="quantidade1">Quantidade</label>
+                                        <input class="form-control" id="quantidade1" name="quantidade1" required type="number" value="{{ produto['quantidade'] }}" readonly=“true”>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="data_validade1">Data de Validade</label>
+                                        <input class="form-control" id="data_validade1" name="data_validade1" required type="date" value="{{ produto['data_validade'] }}" readonly=“true”>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="col-md-offset-10">
+                                <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    Remover Produto
+                                </button>
+                            </div>  
+                    </div>
+            </form>
+        {% endfor %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cadastro_estoque.js') }}"></script>
+{{ super() }}
 {% endblock %}

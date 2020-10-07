@@ -13,86 +13,107 @@
 {% endblock %}
 
 {% block content %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('dashboard') }}">CSS</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                            Estoque
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="navbar-brand" href="{{ url_for('form_cadastro_estoque') }}">Cadastro de Estoque</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                            Produto
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="navbar-brand" href="{{ url_for('form_cadastro_produto') }}">Cadastro de Produto</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                            Kit
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="navbar-brand" href="{{ url_for('form_cadastro_kit') }}">Cadastro de Kit</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                            Loja
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                            Usuário
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
-                    <button type="submit" class="btn btn-success">Sair</button>
-                </form>
-                <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
-          </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">CSS</a>
         </div>
-    </nav>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        Estoque
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="navbar-brand" href="{{ url_for('form_cadastro_estoque') }}">Cadastro de Estoque</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        Produto
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="navbar-brand" href="{{ url_for('form_cadastro_produto') }}">Cadastro de Produto</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        Kit
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="navbar-brand" href="{{ url_for('form_cadastro_kit') }}">Cadastro de Kit</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        Loja
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                        Usuário
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="btn btn-success">Sair</button>
+            </form>
+            <div class="dropdown notification-dropdown">
+                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="glyphicon glyphicon-bell"></i><span class="counter counter-lg">10</span>&nbsp;&nbsp;     
+                </a>
+                <ul class="dropdown-menu notifications" role="menu">
+                    <div class="notification-heading"><h4 class="menu-title">Notificações</h4><h4 class="menu-title pull-right">Ver tudo<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                        <li class="divider"></li>
+                        <div class="notification-wrapper">
+                            <a class="content" href="#">
+                                <div class="notification-item">
+                                    <h4 class="item-title"></h4>
+                                    <p class="item-info"></p>
+                                </div>
+                            </a>
+                        </div>
+                        <li class="divider"></li>
+                        <div class="notification-footer"><h4 class="menu-title">Ver tudo<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                    </div>
+                </ul>
+                <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+            </div>
+            
+      </div>
+    </div>
+</nav>
 <div class="container mensagem">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -114,7 +135,7 @@
                 <label class="control-label" for="codigo_lote">Código do Lote</label>
                 <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value=""> 
             </div>
-            <div class="form-group ">
+            <div class="form-group">
                 <label class="control-label" for="loja">Loja</label> 
                 <select class="form-control" id="loja" name="loja">
                     {% for loja in lojas %}
