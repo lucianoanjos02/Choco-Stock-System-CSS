@@ -110,7 +110,7 @@
     </nav>
 
 <style>
-input[type="text"] {
+input[class ="text"] {
   width: 130px;
   box-sizing: border-box;
   border: 2px solid #ccc;
@@ -143,46 +143,46 @@ input[type=text]:focus {
 </div>
 {% endif %}
 {% endwith %}
-
-<form method="POST">
-    {(form.crsf_token)}
-    {(form.Nome)}
-    {(form.Sobre nome)}
-    {(form.Email)}
-    {(form.login)}
-    {(form.Senha)}
-    {(form.Permissões)}
-
-
-
-    <h1> Gerenciamento de Usário </h1>
-
-    <input type="text" name="Pesquisa" placeholder="Pesquisa.."><br>
-
-    <label for="lname">Nome:</label><br>
-    <input type="text" id="lname" name="lname" value=""><br><br>
-    <label for="lname">Sobre nome:</label><br>
-    <input type="text" id="lname" name="lname" value=""><br><br>
-    <label for="lname">Email:</label><br>
-    <input type="text" id="lname" name="lname" value=""><br><br>
-    <label for="fname">loguin:</label><br>
-    <input type="text" id="fname" name="fname" value=""><br><br>
-    <label for="lname">Senha:</label><br>
-    <input type="text" id="lname" name="lname" value=""><br>
+<div class="cantainer">
+    <form class="form-horizontal" method="POST">
+        <h1> Gerenciamento de Usário </h1>
+        
+        {(form.crsf_token)}
+        {(form.Nome)}
+        {(form.Sobre nome)}
+        {(form.Email)}
+        {(form.login)}
+        {(form.Senha)}
+        {(form.Permissões)}
 
 
-    
 
-    <br> <label for="permissões">Permissões:</label>
-    <select id="cars" name="cars">
-        <option value=""> </option>
-    <option value="administrador">Administrador</option>
-    <option value="usuário">Operador</option><br></br>
-    </select>
+        <input type="text" name="Pesquisa" placeholder="Pesquisa.."><br>
 
-    <br><input type="submit" value="Salvar"><br>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Gerenciar</button>
- 
+        <label for="lname">Nome:</label><br>
+        <input type="text" id="lname" name="lname" value=""><br><br>
+        <label for="lname">Sobre nome:</label><br>
+        <input type="text" id="lname" name="lname" value=""><br><br>
+        <label for="lname">Email:</label><br>
+        <input type="text" id="lname" name="lname" value=""><br><br>
+        <label for="fname">loguin:</label><br>
+        <input type="text" id="fname" name="fname" value=""><br><br>
+        <label for="lname">Senha:</label><br>
+        <input type="text" id="lname" name="lname" value=""><br>
+
+
+        
+
+        <br> <label for="permissões">Permissões:</label>
+        <select id="cars" name="cars">
+            <option value=""> </option>
+        <option value="administrador">Administrador</option>
+        <option value="usuário">Operador</option><br></br>
+        </select>
+
+        <br><input type="submit" value="Salvar"><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Gerenciar</button>
+    </div>
   </form>    
     
 {%endblock%}
