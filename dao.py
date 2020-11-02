@@ -18,7 +18,7 @@ class UsuarioDAO:
             METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO ID DO USUÁRIO
 
             @autor: Luciano Gomes Vieira dos Anjos -
-            @data: 26/08/2020 -
+            @data: 26/08/2020 
             @versao: 1.0.0
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
@@ -360,7 +360,9 @@ class EstoqueProdutoDAO:
             @versao: 1.0.0
         '''
         estoque_produtos = self.__db.query(EstoqueProduto).all()
+
         return estoque_produtos
+        
 
     def get_quantidade_produtos(self, id_estoque):
         '''
