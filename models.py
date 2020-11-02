@@ -297,8 +297,10 @@ class NotificacaoUsuario(Base):
     fk_id_notificacao = Column(Integer, ForeignKey('TNotificacao.id_notificacao'))
     fk_id_usuario = Column(Integer, ForeignKey('TUsuario.id_usuario')) 
     visualizada = Column(Integer, nullable=False)
+    email_enviado = Column(Integer, nullable=False)
 
-    def __init__(self, fk_id_notificacao, fk_id_usuario, visualizada):
+    def __init__(self, fk_id_notificacao, fk_id_usuario, visualizada, email_enviado):
         self.fk_id_notificacao = fk_id_notificacao
         self.fk_id_usuario = fk_id_usuario
         self.visualizada = visualizada
+        self.email_enviado = email_enviado

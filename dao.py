@@ -1,5 +1,5 @@
 from database import db_session
-from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto, TipoProduto, Kit, KitProduto
+from models import Usuario, Permissao, Loja, Produto, Estoque, EstoqueProduto, TipoProduto, Kit, KitProduto, Notificacao, NotificacaoUsuario
 
 class UsuarioDAO:
     '''
@@ -20,7 +20,21 @@ class UsuarioDAO:
             @versao: 1.0.0
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return usuario
+
+    def get_ids_usuarios(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO ID DO USUÁRIO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 26/08/2020 -
+            @versao: 1.0.0
+        '''
+        usuarios = self.__db.query(Usuario.id_usuario).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return usuarios
     
     def get_login_usuario(self, login):
         '''
@@ -30,6 +44,8 @@ class UsuarioDAO:
             @versao: 1.0.0
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.login == login).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return usuario
     
     def get_emails(self):
@@ -43,6 +59,8 @@ class UsuarioDAO:
         lista_emails = []
         for email in emails:
             lista_emails.append(email.email)
+        self.__db.expunge_all()
+        self.__db.close()
         return lista_emails
 
     def cadastrar_usuario(self, usuario):
@@ -85,10 +103,14 @@ class PermissaoDAO:
         permissoes = []
         for permissao in dados_permissoes:
             permissoes.append(permissao.permissao)
+        self.__db.expunge_all()
+        self.__db.close()
         return permissoes
     
     def get_id_permissao(self, permissao):
         id_permissao = self.__db.query(Permissao.id_permissao).filter(Permissao.permissao == permissao).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return id_permissao
 
 
@@ -114,10 +136,14 @@ class TipoProdutoDAO:
         tipos_produto = []
         for tipo in info_tipos_produto:
             tipos_produto.append(tipo.tipo)
+        self.__db.expunge_all()
+        self.__db.close()
         return tipos_produto
     
     def get_id_tipo(self, tipo):
         id_tipo = self.__db.query(TipoProduto.id).filter(TipoProduto.tipo == tipo).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return id_tipo
 
 
@@ -143,6 +169,8 @@ class LojaDAO:
         lojas = []
         for loja in dados_lojas:
             lojas.append(loja.id_loja)
+        self.__db.expunge_all()
+        self.__db.close()
         return lojas
 
     def cadastrar_loja(self, loja):
@@ -183,6 +211,8 @@ class ProdutoDAO:
             @versao: 1.0.0
         '''
         produto = self.__db.query(Produto.nome).filter(Produto.id_produto == id_produto).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return produto
     
     def get_produtos(self):
@@ -196,6 +226,8 @@ class ProdutoDAO:
         produtos = []
         for produto in dados_produtos:
             produtos.append(produto.nome)
+        self.__db.expunge_all()
+        self.__db.close()
         return produtos
     
     def get_id_produto(self, nome_produto):
@@ -206,6 +238,8 @@ class ProdutoDAO:
             @versao: 1.0.0
         '''
         id_produto = self.__db.query(Produto).filter(Produto.nome == nome_produto).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return id_produto.id_produto
     
     def cadastrar_produto(self, produto):
@@ -264,6 +298,8 @@ class EstoqueDAO:
             @versao: 1.0.0
         '''
         codigo_lote = self.__db.query(Estoque.codigo_lote).filter(Estoque.id_estoque == id_estoque).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return codigo_lote
     
     def get_ultimo_estoque_id(self):
@@ -274,6 +310,8 @@ class EstoqueDAO:
             @versao: 1.0.0
         '''
         estoque = self.__db.query(Estoque).order_by(Estoque.id_estoque.desc()).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return estoque.id_estoque
     
     def update_total_item(self, novo_total, id_estoque):
@@ -316,6 +354,8 @@ class EstoqueProdutoDAO:
             @versao: 1.0.0
         '''
         estoque_produtos = self.__db.query(EstoqueProduto).all()
+        self.__db.expunge_all()
+        self.__db.close()
         return estoque_produtos
 
     def get_quantidade_produtos(self, id_estoque):
@@ -327,6 +367,8 @@ class EstoqueProdutoDAO:
             @versao: 1.0.0
         '''
         quantidades_estoque = self.__db.query(EstoqueProduto.quantidade_produto).filter(EstoqueProduto.fk_id_estoque == id_estoque).all()
+        self.__db.expunge_all()
+        self.__db.close()
         return quantidades_estoque
     
     def cadastrar_estoque_produto(self, estoque_produto):
@@ -383,6 +425,8 @@ class KitDAO:
             @versao: 1.0.0
         '''
         kit = self.__db.query(Kit).order_by(Kit.id_kit.desc()).first()
+        self.__db.expunge_all()
+        self.__db.close()
         return kit.id_kit
 
 
@@ -426,7 +470,101 @@ class NotificacaoDAO:
     '''
     def __init__(self, db):
         self.__db = db_session
+
+    def get_notificacoes_data_validade(self):
+        '''
+            METODO QUE RETORNA TODAS AS NOTIFICAÇÕES DE DATA DE VALIDADE
+            REGISTRADAS
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        notificacoes = self.__db.query(Notificacao).filter(Notificacao.fk_id_tipo_notificacao == 1).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return notificacoes
+
+    def get_notificacao_data_validade(self, fk_id_estoque_produto):
+        '''
+            METODO QUE RETORNA A NOTIFICAÇÃO DE DATA DE VALIDADE
+            REFERENTE À UM PRODUTO ESPECÍFICO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        notificacoes = self.__db.query(Notificacao).filter(Notificacao.fk_id_estoque_produto, Notificacao.fk_id_tipo_notificacao == 1).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return notificacoes
     
+    def get_notificacoes_quantidade(self):
+        '''
+            METODO QUE RETORNA TODAS AS NOTIFICAÇÕES DE QUANTIDADE
+            REGISTRADAS NO SISTEMA
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        notificacoes = self.__db.query(Notificacao).filter(Notificacao.fk_id_tipo_notificacao == 2).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return notificacoes
+    
+    def get_info_notificacoes_data_validade(self, info_notificacao):
+        '''
+            METODO QUE RETORNA A INFORMAÇÃO DE NOTIFICAÇÕES
+            DE DATA DE VALIDADE REGISTRADA, PASSANDO COMO PARÂMETRO
+            A STRING info_notificacao
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        infos_notificacoes = self.__db.query(Notificacao.info_notificacao).filter(Notificacao.fk_id_tipo_notificacao == 1, Notificacao.info_notificacao == info_notificacao).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        infos_notificacoes_list = []
+        for info in infos_notificacoes:
+            infos_notificacoes_list.append(info[0])
+        return infos_notificacoes_list
+
+    
+    def get_info_notificacoes_quantidade(self, info_notificacao):
+        '''
+            METODO QUE RETORNA A INFORMAÇÃO DE NOTIFICAÇÕES
+            DE QUANTIDADE DE PRODUTO REGISTRADA, PASSANDO COMO PARÂMETRO
+            A STRING info_notificacao
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        infos_notificacoes = self.__db.query(Notificacao.info_notificacao).filter(Notificacao.fk_id_tipo_notificacao == 2, Notificacao.info_notificacao == info_notificacao).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        infos_notificacoes_list = []
+        for info in infos_notificacoes:
+            infos_notificacoes_list.append(info[0])
+        return infos_notificacoes_list
+    
+    def get_id_notificacao_email_id_estoque_produto(self, id_estoque):
+        '''
+            METODO QUE RETORNA O ID DA NOTIFICAÇÃO DE UM DETERMINADO
+            PRODUTO EM ESTOQUE, PASSANDO O ID DELE EM ESTOQUE COMO
+            PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        id_notificacao = self.__db.query(Notificacao.id_notificacao).filter(Notificacao.fk_id_estoque_produto == id_estoque, Notificacao.fk_id_tipo_notificacao == 1).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return id_notificacao
+
     def registra_notificacao(self, notificacao):
         '''
             METODO QUE PERSISTE AS INFORMAÇÕES DA NOTIFICAÇÃO NO BANCO
@@ -444,14 +582,84 @@ class NotificacaoDAO:
         finally:
             self.__db.close()
         return 'Notificação registrada com sucesso'
-    
-    # def get_ultimo_kit_id(self):
-    #     '''
-    #         METODO QUE RETORNA O ID DO ÚLTIMO KIT CADASTRADO NO SISTEMA
 
-    #         @autor: Luciano Gomes Vieira dos Anjos -
-    #         @data: 15/09/2020 -
-    #         @versao: 1.0.0
-    #     '''
-    #     kit = self.__db.query(Kit).order_by(Kit.id_kit.desc()).first()
-    #     return kit.id_kit
+
+class NotificacaoUsuarioDAO:
+    '''
+        CLASSE NotificacaoUsuarioDAO - IMPLEMENTA O ACESSO AO BANCO RELACIONADO A CLASSE 
+        NotificacaoUsuario DO MÓDULO models.py QUE MAPEIA A TABELA TNotificacaoUsuario
+
+        @autor: Luciano Gomes Vieira dos Anjos -
+        @data: 10/10/2020 -
+        @versao: 1.0.0
+    '''
+    def __init__(self, db):
+        self.__db = db_session
+    
+    def get_fk_id_notificacoes(self):
+        '''
+            METODO QUE RETORNA TODDOS OS IDs DAS NOTIFICAÇÕES DOS USUÁRIOS
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        fk_id_notificacoes = self.__db.query(NotificacaoUsuario.fk_id_notificacao).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        list_id_notificacao = []
+        for id_notificacao in fk_id_notificacoes:
+            list_id_notificacao.append(id_notificacao[0])
+        return list_id_notificacao
+    
+    def get_email_enviado(self, id_notificacao):
+        '''
+            METODO QUE RETORNA O A FLAG email_enviado DE UMA DETERMINADA
+            NOTIFICAÇÃO, PASSANDO O ID DA NOTIFICAÇÃO COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 24/10/2020 -
+            @versao: 1.0.0
+        '''
+        email_enviado_notificacao = self.__db.query(NotificacaoUsuario.email_enviado).filter(NotificacaoUsuario.fk_id_notificacao == id_notificacao).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return email_enviado_notificacao.email_enviado
+
+    def registra_notificacao_usuario(self, notificacao_usuario):
+        '''
+            METODO QUE PERSISTE AS INFORMAÇÕES DA NOTIFICAÇÃO DE
+            CADA USUÁRIO NO BANCO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 10/10/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.add(notificacao_usuario)
+            self.__db.commit()
+        except:
+            print("Erro ao registrar notificação do usuário")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Notificação do usuário registrada com sucesso'
+    
+    def update_email_enviado(self, id_notificacao):
+        '''
+            METODO QUE ATUALIZA A FLAG email_enviado INDICANDO QUE O E-MAIL
+            RELACIONADO À DATA DE VALIDADE OU QUANTIDADE PRODUTO FOI ENVIADO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 24/10/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(NotificacaoUsuario).filter(NotificacaoUsuario.fk_id_notificacao == id_notificacao).update({NotificacaoUsuario.email_enviado: 1})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar email_enviado")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'email_enviado atualizado com sucesso'
