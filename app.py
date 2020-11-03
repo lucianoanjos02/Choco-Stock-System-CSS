@@ -368,8 +368,25 @@ def editar_estoque():
     '''
     pass
 
+
+
+@app.route('/gerenciar/usuario', methods=['GET','PUT'])
+def gerenciamento_usuario():
+    '''
+
+    @autor: Wellington Costa Araujo
+    @data: 24/10/2020
+    @URL: http://localhost:5000/login 
+    @versao: 1.0.0
+    '''
+   
+    return render_template ("gerenciamento_usuario.html")
+
+
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO
 if __name__ == '__main__':
     app.run(host='localhost', port='5000', debug=True)
     envia_notificao_email()
+
+
