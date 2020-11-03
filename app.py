@@ -3,7 +3,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_bootstrap import Bootstrap
 from database import db_session
 from forms import LoginForm, CadastroUsuarioForm
-from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO, PermissaoDAO
+from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO, PermissaoDAO, NotificacaoDAO, NotificacaoUsuarioDAO
 from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja, Usuario
 import os
 import binascii
@@ -29,6 +29,8 @@ kit_dao = KitDAO(db_session)
 kit_produto_dao = KitProdutoDAO(db_session)
 estoque_dao = EstoqueDAO(db_session)
 estoque_produto_dao = EstoqueProdutoDAO(db_session)
+notificacao_dao = NotificacaoDAO(db_session)
+notificacao_usuario_dao = NotificacaoUsuarioDAO(db_session)
 
 #CONFIGURAÇÕES DA APP
 app.config['DEBUG'] = True
@@ -75,7 +77,8 @@ def dashboard():
     @URL: http://localhost:5000/dashboard - 
     @versao: 1.0.0
     '''
-    return render_template('index.html')
+    return render_template('index.html', notificacoes=notificacao_dao.get_notificacoes(), 
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -139,7 +142,9 @@ def cadastro_usuario():
         usuario_dao.cadastrar_usuario(usuario)
         flash("Usuário cadastrado com sucesso!")
         return redirect(url_for('dashboard'))
-    return render_template('cadastro_usuario.html', form=form)
+    return render_template('cadastro_usuario.html', form=form, 
+                           notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/estoque/cadastro', methods=['GET'])
@@ -156,7 +161,9 @@ def form_cadastro_estoque():
     @URL: http://localhost:5000/estoque/cadastro - 
     @versao: 1.0.0
     '''
-    return render_template('cadastro_estoque.html', lojas=loja_dao.get_lojas(), produtos=produto_dao.get_produtos())
+    return render_template('cadastro_estoque.html', lojas=loja_dao.get_lojas(), 
+                           produtos=produto_dao.get_produtos(), notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/cadastrar_estoque', methods=['POST'])
@@ -182,10 +189,10 @@ def cadastrar_estoque():
     while pos < len(info_produtos):
         estoque_produto = EstoqueProduto(estoque_dao.get_ultimo_estoque_id(), 
                                          produto_dao.get_id_produto(info_produtos[pos]), 
-                                         info_produtos[pos + 1], 
-                                         info_produtos[pos + 2], 
-                                         info_produtos[pos + 3])
-        pos += 4
+                                         info_produtos[pos + 1],
+                                         info_produtos[pos + 1],  
+                                         info_produtos[pos + 2])
+        pos += 3
         estoque_produto_dao.cadastrar_estoque_produto(estoque_produto)
     quantidade_produtos = estoque_produto_dao.get_quantidade_produtos(estoque_dao.get_ultimo_estoque_id())
     for quantidade in quantidade_produtos:
@@ -209,7 +216,9 @@ def form_cadastro_produto():
     @URL: http://localhost:5000/produtos/cadastro - 
     @versao: 1.0.0
     '''
-    return render_template('cadastro_produto.html', tipos_produto=tipo_produto_dao.get_tipos_produto())
+    return render_template('cadastro_produto.html', tipos_produto=tipo_produto_dao.get_tipos_produto(), 
+                           notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/cadastrar_produto', methods=['POST'])
@@ -249,7 +258,9 @@ def form_cadastro_kit():
     @URL: http://localhost:5000/kit/cadastro - 
     @versao: 1.0.0
     '''
-    return render_template('cadastro_kit.html', produtos=produto_dao.get_produtos())
+    return render_template('cadastro_kit.html', produtos=produto_dao.get_produtos(), 
+                           notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/cadastrar_kit', methods=['POST'])
@@ -293,7 +304,8 @@ def form_cadastro_loja():
     @URL: http://localhost:5000/loja/cadastro - 
     @versao: 1.0.0
     '''
-    return render_template('cadastro_loja.html')
+    return render_template('cadastro_loja.html', notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 
 @app.route('/cadastrar_loja', methods=['POST'])
@@ -323,6 +335,22 @@ def cadastrar_loja():
     flash("Loja cadastrada com sucesso!")
     return redirect(url_for('dashboard'))
 
+
+@app.route('/notificacoes', methods=['GET','POST'])
+@login_required
+def visualizar_notificacoes():
+    '''
+    ROTA QUE ACESSA A PÁGINA DE VISUALIZAÇÃO DE TODAS AS NOTIFICAÇÕES DO SISTEMA
+    E ATUALIZA A QUANTIDADE DE NOTIFICAÇÕES NÃO VISUALIZADAS DO USUÁRIO LOGADO
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 31/10/2020 -
+    @URL: http://localhost:5000/notificacoes - 
+    @versao: 1.0.0
+    '''
+    notificacao_usuario_dao.update_notificacao_visualizada(current_user.id_usuario)
+    return render_template('notificacoes.html', notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO

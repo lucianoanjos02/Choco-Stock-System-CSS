@@ -19,5 +19,5 @@ botaoAdicionarProduto.addEventListener("click", resetarDisplayNotificacoes);
 
 function resetarDisplayNotificacoes() {
     event.preventDefault();
-    document.querySelector('.counter').outerHTML = '';
+    document.querySelector('.counter').remove();
 }

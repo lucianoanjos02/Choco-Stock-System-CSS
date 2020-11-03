@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/cadastro_kit.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/notificacoes.css')}}">
 {% endblock %}
 
 {% block title %}
-    Cadastro de Kit - CSS
+    Dashboard - CSS
 {% endblock %}
 
 {% block content %}
@@ -133,63 +133,27 @@
     {% endif %}
     {% endwith %}
 </div>
-    <div class="container">
-        <form name="formKit" class="form-horizontal" action="{{ url_for('cadastrar_kit') }}" method="POST">
-            <h1>Cadastro de Kit</h1>
-            <div class="form-group  required">
-                <label class="control-label" for="codigo">Código do Kit</label>
-                <input class="form-control" id="codigo" name="codigo" required type="text" value=""> 
-            </div>
-            <div class="form-group  required">
-                <label class="control-label" for="nome">Nome do Kit</label>
-                <input class="form-control" id="nome" name="nome" required type="text" value=""> 
-            </div>
-            <div class="form-group  required">
-                <label class="control-label" for="quantidade">Quantidade</label>
-                <input class="form-control" id="quantidade" name="quantidade" required type="number">
-            </div>
-            <div class="form-group  required">
-                <label class="control-label" for="preco">Preço</label>
-                <input class="form-control" id="preco" name="preco" required type="number" step=".01">
-            </div>
-            <div class="form-group  required">
-                <label class="control-label" for="data_validade1">Data de Validade</label>
-                <input class="form-control" id="data_validade" name="data_validade" required type="date">
-            </div>
-            <div class="container" id="produtos">
-                    <div class="form-group produtos">
-                        <label class="control-label" for="produto1">Produto</label> 
-                        <select class="form-control produto" id="produto1" name="produto1">
-                            {% for produto in produtos %}
-                                <option value={{ produto }}>{{ produto }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>    
-                </div>
-                <div class="container" id="produto-button">
-                    <div class="col-xs-3">
-                        <button class="btn btn-lg btn-success btn-block" id="adicionar-produto" type="button">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                            Adicionar Produto
-                        </button>
+<div class="container">
+    <ul class="menu notifications" role="rowgroup">
+        <div class="notification-heading">
+            <h1 class="title">Notificações</h1>
+        {% for notificacao in notificacoes %}
+            <div class="notification-wrapper">
+                <a class="content" href="#">
+                    <div class="notification-item">
+                        <h4 class="item-title">{{ notificacao.assunto_notificacao }}</h4>
+                        <p class="item-info">{{ notificacao.info_notificacao }}</p>
+                        <p class="item-info">Data/Horário: {{ notificacao.data_notificacao }}</p>
                     </div>
-                    <div class="col-xs-3">
-                        <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            Remover Produto
-                        </button>
-                    </div> 
-                </div>
-                <div class="col-xs-4">
-                    <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Cadastrar</button>
-                </div>
+                </a>
             </div>
-        </form>
-    </div>
-{% endblock %}
+        {% endfor %}
+        </div>
+    </ul>
+</div>
+{% endblock content %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/cadastro_kit.js') }}"></script>
 <script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
 {{ super() }}
 {% endblock %}

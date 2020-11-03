@@ -428,6 +428,33 @@ class KitDAO:
         self.__db.expunge_all()
         self.__db.close()
         return kit.id_kit
+    
+    def get_kits(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE KITS CADASTRADOS
+            EM ESTOQUE
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 27/09/2020 -
+            @versao: 1.0.0
+        '''
+        kits = self.__db.query(Kit).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return kits
+    
+    def get_codigo_kit(self, id_kit):
+        '''
+            METODO QUE RETORNA O CÓDIGO DO KIT.
+            ESSE MÉTODO RECEBE O ID DO KIT CADASTRADO NO SISTEMA
+            COMO PARÂMETRO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        codigo_kit = self.__db.query(Kit.codigo).filter(Kit.id_kit == id_kit).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return codigo_kit
 
 
 class KitProdutoDAO:
@@ -470,6 +497,19 @@ class NotificacaoDAO:
     '''
     def __init__(self, db):
         self.__db = db_session
+    
+    def get_notificacoes(self):
+        '''
+            METODO QUE RETORNA TODAS AS NOTIFICAÇÕES REGISTRADAS
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        notificacoes = self.__db.query(Notificacao).order_by(Notificacao.data_notificacao.desc()).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return notificacoes
 
     def get_notificacoes_data_validade(self):
         '''
@@ -513,6 +553,20 @@ class NotificacaoDAO:
         self.__db.close()
         return notificacoes
     
+    def get_notificacoes_data_validade_kit(self):
+        '''
+            METODO QUE RETORNA TODAS AS NOTIFICAÇÕES DE DATA DE VALIDADE
+            DE KITS REGISTRADAS
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        notificacoes = self.__db.query(Notificacao).filter(Notificacao.fk_id_tipo_notificacao == 3).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return notificacoes
+    
     def get_info_notificacoes_data_validade(self, info_notificacao):
         '''
             METODO QUE RETORNA A INFORMAÇÃO DE NOTIFICAÇÕES
@@ -530,6 +584,25 @@ class NotificacaoDAO:
         for info in infos_notificacoes:
             infos_notificacoes_list.append(info[0])
         return infos_notificacoes_list
+    
+    def get_info_notificacoes_data_validade_kit(self, info_notificacao):
+        '''
+            METODO QUE RETORNA A INFORMAÇÃO DE NOTIFICAÇÕES
+            DE DATA DE VALIDADE DE KITS REGISTRADAS, PASSANDO COMO PARÂMETRO
+            A STRING info_notificacao
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        infos_notificacoes = self.__db.query(Notificacao.info_notificacao).filter(Notificacao.fk_id_tipo_notificacao == 3, Notificacao.info_notificacao == info_notificacao).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        infos_notificacoes_list = []
+        for info in infos_notificacoes:
+            infos_notificacoes_list.append(info[0])
+        return infos_notificacoes_list
+
 
     
     def get_info_notificacoes_quantidade(self, info_notificacao):
@@ -595,7 +668,7 @@ class NotificacaoUsuarioDAO:
     '''
     def __init__(self, db):
         self.__db = db_session
-    
+
     def get_fk_id_notificacoes(self):
         '''
             METODO QUE RETORNA TODDOS OS IDs DAS NOTIFICAÇÕES DOS USUÁRIOS
@@ -625,6 +698,18 @@ class NotificacaoUsuarioDAO:
         self.__db.expunge_all()
         self.__db.close()
         return email_enviado_notificacao.email_enviado
+    
+    def get_quantidade_notificacoes_usuario(self, id_usuario):
+        '''
+            METODO QUE RETORNA A QUANTIDADE DE NOTIFICAÇÕES NÃO VISUALIZADAS
+            DE UM DETERMINADO USUÁRIO, UTILIZANDO COMO PARÂMETRO O ID DO USUÁRIO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        quantidade_notificacoes = self.__db.query(NotificacaoUsuario.id).filter(NotificacaoUsuario.fk_id_usuario == id_usuario, NotificacaoUsuario.visualizada == 0).count()
+        return quantidade_notificacoes
 
     def registra_notificacao_usuario(self, notificacao_usuario):
         '''
@@ -663,3 +748,23 @@ class NotificacaoUsuarioDAO:
         finally:
             self.__db.close()
         return 'email_enviado atualizado com sucesso'
+    
+    def update_notificacao_visualizada(self, id_usuario):
+        '''
+            METODO QUE ATUALIZA A FLAG visualizada INDICANDO QUE AS NOTIFICAÇÕES
+            JÁ FORAM VISUALIZADAS POR DETERMINADO USUÁRIO DENTRO DO SISTEMA, UTILIZANDO
+            O ID DO USUÁRIO COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 31/10/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(NotificacaoUsuario).filter(NotificacaoUsuario.fk_id_usuario == id_usuario, NotificacaoUsuario.visualizada == 0).update({NotificacaoUsuario.visualizada: 1})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar que a notificação foi atualizada")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Notificação visualizada atualizada com sucesso'

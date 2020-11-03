@@ -89,7 +89,33 @@
             <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
                 <button type="submit" class="btn btn-success">Sair</button>
             </form>
-            <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+            <div class="dropdown notification-dropdown">
+                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="glyphicon glyphicon-bell"></i><span class="counter counter-lg">{{ quantidade_notificacoes_usuario }}</span>&nbsp;&nbsp;     
+                </a>
+                <ul class="dropdown-menu notifications" role="menu">
+                    <div class="notification-heading">
+                        <h4 class="menu-title">Notificações</h4>
+                        <h4 class="menu-title pull-right">
+                            <a class="menu-title" href="{{ url_for('visualizar_notificacoes') }}">Ver tudo</a> 
+                        <i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                    {% for notificacao in notificacoes %}
+                        <li class="divider"></li>
+                        <div class="notification-wrapper">
+                            <a class="content" href="#">
+                                <div class="notification-item">
+                                    <h4 class="item-title">{{ notificacao.assunto_notificacao }}</h4>
+                                    <p class="item-info">{{ notificacao.info_notificacao }}</p>
+                                    <p class="item-info">Data/Horário: {{ notificacao.data_notificacao }}</p>
+                                </div>
+                            </a>
+                        </div>
+                        <li class="divider"></li>
+                    {% endfor %}
+                    </div>
+                </ul>
+                <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+            </div>
       </div>
     </div>
 </nav>
@@ -120,4 +146,9 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
+{{ super() }}
 {% endblock %}
