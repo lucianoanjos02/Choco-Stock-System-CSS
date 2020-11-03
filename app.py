@@ -355,6 +355,15 @@ def form_gerenciamento_estoque():
     return render_template('gerenciamento_estoque.html', estoque=estoque)
 
 
+@app.route('/usuario/gerenciamento', methods=['GET'])
+@login_required
+def form_gerenciamento_usuario():
+    '''
+    ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE ESTOQUE (gerenciamento_estoque.html)
+    '''
+    return render_template('gerenciamento_usuario.html')
+
+
 @app.route('/editar_estoque', methods=['GET','POST'])
 @login_required
 def editar_estoque():

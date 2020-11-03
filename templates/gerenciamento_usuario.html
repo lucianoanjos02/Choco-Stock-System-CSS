@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/gerenciamento_estoque.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/gerenciamento_usuario.css')}}">
 {% endblock %}
 
 {% block title %}
-    Gerenciamento de Estoque - CSS
+    Gerenciamento de Usuário - CSS
 {% endblock %}
 
 {% block content %}
@@ -111,8 +111,7 @@
                     </div>
                 </ul>
                 <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
-            </div>
-            
+            </div>  
       </div>
     </div>
 </nav>
@@ -131,15 +130,15 @@
     {% endwith %}
 </div>
     <div class="container">
-        <h1>Gerenciamento de Estoque</h1>
-        {% for lote in estoque.values() %}
-            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_estoque') }}" method="POST">
+        <h1>Gerenciamento de Usuário</h1>
+        {% for lote in cadastro_usuario.values() %}
+            <form name="CadastroUsuarioForm" class="form-horizontal" action="{{ url_for('cadastro_usuario') }}" method="POST">
                 <div class="container" id="produtos">
                     <div class="container info-produto" id="info-produto1">
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label" for="loja">Loja</label> 
-                                <input class="form-control" id="loja" name="loja" required type="text" value="{{ lote['loja'] }}" readonly=“true”>
+                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lote['loja'] }}" readonly=“true”>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -175,14 +174,15 @@
                                     </div>
                                 </div>
                             </div>
-                            {% endfor %}
-                            <div class="col-md-offset-10">
-                                <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    Remover Produto
-                                </button>
-                            </div>  
-                    </div>
+                        {% endfor %}
+                        <div class="col-md-offset-10">
+                            <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="button">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                Remover Produto
+                            </button>
+                        </div>
+                    </div>  
+                </div>
             </form>
         {% endfor %}
     </div>
