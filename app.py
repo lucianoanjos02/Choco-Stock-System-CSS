@@ -376,7 +376,7 @@ def gerenciamento_usuario():
 
     @autor: Wellington Costa Araujo
     @data: 24/10/2020
-    @URL: http://localhost:5000/login 
+    @URL: http://localhost:5000/gerenciar/usuario
     @versao: 1.0.0
     '''
    
