@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/gerenciamento_estoque.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/gerenciamento_usuario.css')}}">
 {% endblock %}
 
 {% block title %}
-    Gerenciamento de Estoque - CSS
+    Gerenciamento de Usuários - CSS
 {% endblock %}
 
 {% block content %}
@@ -136,73 +136,54 @@
     {% endwith %}
 </div>
     <div class="container">
-        <h1>Gerenciamento de Estoque</h1>
-        <div class="container">
-            <form name="formEstoque" class="form-horizontal" action="{{ url_for('pesquisa_estoque') }}" method="POST">
-                <label class="control-label" for="filtro_pesquisa">Filtro da Pesquisa</label> 
-                <select class="form-control" id="filtro_pesquisa" name="filtro_pesquisa">
-                    <option value="Código Lote">Código Lote</option>
-                    <option value="Produto">Produto</option>
-                    <option value="Loja">Loja</option>
-                </select>
-                <label class="control-label" for="campo_pesquisa"></label>
-                <input class="form-control" id="campo_pesquisa" name="campo_pesquisa" required type="text" placeholder="Pesquise um lote por Código do Lote, Produto ou Loja">
-                <div class="col-xs-4">
-                    <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Pesquisar</button>
-                </div>
-        </div>
-        </form>
+        <h1>Gerenciamento de Usuários</h1>
         {% set count = namespace(value=0) %}
-        {% for lote in estoque.values() %}
-            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_lote_estoque') }}" method="POST">
-                <div class="container lote" id="produtos">
-                    <div class="container info-produto" id="info-produto">
-                        <div class="col-md-6">
-                            <div class="form-group required">
-                                <label class="control-label" for="loja">Loja</label> 
-                                <input class="form-control" id="loja" name="loja" required type="text" value="{{ lote['loja'] }}" readonly=“true”>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group required">
-                                <label class="control-label" for="codigo_lote">Código do Lote</label>
-                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lote['codigo_lote'] }}" readonly=“true”> 
-                            </div>
-                        </div>
-                    </div>
-                        {% for produto in lote['produtos'].values() %}
-                            {% set count.value = count.value + 1 %}
-                            <div class="container produtos">
+        {% for usuario in usuarios.values() %}
+            {% set count.value = count.value + 1 %}
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_usuario') }}" method="POST">
+                <div class="container lote" id="usuarios">
+                            <div class="container info-usuario">
                                 <div class="col-md-6">
                                     <div class="form-group required">
-                                        <label class="control-label" for="tipo{{ count.value }}">Tipo</label>
-                                        <input class="form-control" id="tipo{{ count.value }}" name="tipo{{ count.value }}" required type="text" value="{{ produto['tipo'] }}" readonly=“true”>   
+                                        <label class="control-label" for="nome{{ count.value }}">Nome</label>
+                                        <input class="form-control" id="nome{{ count.value }}" name="nome{{ count.value }}" required type="text" value="{{ usuario['nome'] }}" readonly=“true”>   
                                     </div>  
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
-                                        <label class="control-label" for="produto{{ count.value }}">Nome do Produto</label> 
-                                        <input class="form-control" id="produto{{ count.value }}" name="produto{{ count.value }}" required type="text" value="{{ produto['produto'] }}" readonly=“true”>   
+                                        <label class="control-label" for="sobrenome{{ count.value }}">sobrenome</label> 
+                                        <input class="form-control" id="sobrenome{{ count.value }}" name="sobrenome{{ count.value }}" required type="text" value="{{ usuario['sobrenome'] }}" readonly=“true”>   
                                     </div>    
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
-                                        <label class="control-label" for="quantidade{{ count.value }}">Quantidade</label>
-                                        <input class="form-control" id="quantidade{{ count.value }}" name="quantidade{{ count.value }}" required type="number" value="{{ produto['quantidade'] }}" readonly=“true”>
+                                        <label class="control-label" for="email{{ count.value }}">E-mail</label>
+                                        <input class="form-control" id="email{{ count.value }}" name="email{{ count.value }}" required type="email" value="{{ usuario['email'] }}" readonly=“true”>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
-                                        <label class="control-label" for="data_validade{{ count.value }}">Data de Validade</label>
-                                        <input class="form-control" id="data_validade{{ count.value }}" name="data_validade{{ count.value }}" required type="date" value="{{ produto['data_validade'] }}" readonly=“true”>
+                                        <label class="control-label" for="login{{ count.value }}">Login</label>
+                                        <input class="form-control" id="login{{ count.value }}" name="login{{ count.value }}" required type="text" value="{{ usuario['login'] }}" readonly=“true”>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="senha{{ count.value }}">Senha</label>
+                                        <input class="form-control" id="senha{{ count.value }}" name="senha{{ count.value }}" required type="password" value="{{ usuario['senha'] }}" readonly=“true”>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="permissao{{ count.value }}">Permissão</label>
+                                        <input class="form-control" id="permissao{{ count.value }}" name="permissao{{ count.value }}" required type="text" value="{{ usuario['permissao'] }}" readonly=“true”>
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
                             <div class="col-md-offset-10">
                                 <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="submit">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    Remover Produto
+                                    Editar Usuário
                                 </button>
                             </div>  
                 </div>

@@ -1,0 +1,101 @@
+.mensagem {
+    margin-top: 3%;
+}
+
+h1 {
+    margin-top: 5%;
+}
+
+.form-horizontal {
+    margin-top: 5%;
+}
+
+.usuario {
+    margin: 5px 10% 10px 5px;
+    border: 0.25px solid #adadad;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+
+#produto-button {
+    margin-left: 28%;
+}
+
+.col-xs-4 {
+    margin-top: 5%;
+    margin-left: 34%;
+}
+
+.glyphicon-bell {
+    font-size: 2rem;
+    color: #8f8f8f;
+  }
+
+  .notification-dropdown {
+    display:inline;
+    margin-left:5%;
+    padding:2%;
+  }
+
+.notifications {
+   min-width:420px; 
+  }
+  
+  .notifications-wrapper {
+     overflow:auto;
+      max-height:250px;
+    }
+    
+ .menu-title {
+     color:#ff7788;
+     font-size:1.5rem;
+      display:inline-block;
+      }
+ 
+.glyphicon-circle-arrow-right {
+      margin-left:10px;     
+   }
+  
+   
+ .notification-heading, .notification-footer  {
+ 	padding:2px 10px;
+       }
+      
+        
+.dropdown-menu.divider {
+  margin:5px 0;          
+  }
+
+.notification-item-title {
+  
+ font-size:1.3rem;
+ color:#000;
+    
+}
+
+.notification-content {
+ text-decoration:none;
+ background:#ccc;
+
+ }
+    
+.notification-item {
+ padding:10px;
+ margin:5px;
+ background:#ccc;
+ border-radius:4px;
+ }
+
+
+.counter.counter-lg {
+    top: -15px !important;
+    position: relative;
+    right: -3%;
+    height: 18px;
+    width: 18px;
+    color: honeydew;
+    background-size: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 12px;
+}

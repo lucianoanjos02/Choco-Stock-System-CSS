@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Gerenciamento de Estoque - CSS
+    Editar Lote - CSS
 {% endblock %}
 
 {% block content %}
@@ -136,41 +136,25 @@
     {% endwith %}
 </div>
     <div class="container">
-        <h1>Gerenciamento de Estoque</h1>
-        <div class="container">
-            <form name="formEstoque" class="form-horizontal" action="{{ url_for('pesquisa_estoque') }}" method="POST">
-                <label class="control-label" for="filtro_pesquisa">Filtro da Pesquisa</label> 
-                <select class="form-control" id="filtro_pesquisa" name="filtro_pesquisa">
-                    <option value="Código Lote">Código Lote</option>
-                    <option value="Produto">Produto</option>
-                    <option value="Loja">Loja</option>
-                </select>
-                <label class="control-label" for="campo_pesquisa"></label>
-                <input class="form-control" id="campo_pesquisa" name="campo_pesquisa" required type="text" placeholder="Pesquise um lote por Código do Lote, Produto ou Loja">
-                <div class="col-xs-4">
-                    <button class="btn btn-lg btn-primary btn-block" id="cadastrar-produto" type="submit">Pesquisar</button>
-                </div>
-        </div>
-        </form>
+        <h1>Editar Lote</h1>
         {% set count = namespace(value=0) %}
-        {% for lote in estoque.values() %}
-            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_lote_estoque') }}" method="POST">
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('atualizar_quantiade') }}" method="POST">
                 <div class="container lote" id="produtos">
                     <div class="container info-produto" id="info-produto">
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label" for="loja">Loja</label> 
-                                <input class="form-control" id="loja" name="loja" required type="text" value="{{ lote['loja'] }}" readonly=“true”>
+                                <input class="form-control" id="loja" name="loja" required type="text" value="{{ lotes['loja'] }}" readonly=“true”>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group required">
                                 <label class="control-label" for="codigo_lote">Código do Lote</label>
-                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lote['codigo_lote'] }}" readonly=“true”> 
+                                <input class="form-control" id="codigo_lote" name="codigo_lote" required type="text" value="{{ lotes['codigo_lote'] }}" readonly=“true”> 
                             </div>
                         </div>
                     </div>
-                        {% for produto in lote['produtos'].values() %}
+                        {% for produto in lotes['produtos'].values() %}
                             {% set count.value = count.value + 1 %}
                             <div class="container produtos">
                                 <div class="col-md-6">
@@ -182,13 +166,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label" for="produto{{ count.value }}">Nome do Produto</label> 
-                                        <input class="form-control" id="produto{{ count.value }}" name="produto{{ count.value }}" required type="text" value="{{ produto['produto'] }}" readonly=“true”>   
+                                        <input class="form-control" id="produto{{ count.value }}" name="produto{{ count.value }}" required type="text" value="{{ produto['nome'] }}" readonly=“true”>   
                                     </div>    
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label" for="quantidade{{ count.value }}">Quantidade</label>
-                                        <input class="form-control" id="quantidade{{ count.value }}" name="quantidade{{ count.value }}" required type="number" value="{{ produto['quantidade'] }}" readonly=“true”>
+                                        <input class="form-control" id="quantidade{{ count.value }}" name="quantidade{{ count.value }}" min="0" max="{{ produto['quantidade'] }}" required type="number" value="{{ produto['quantidade'] }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -199,15 +183,11 @@
                                 </div>
                             </div>
                         {% endfor %}
-                            <div class="col-md-offset-10">
-                                <button class="btn btn-lg btn-danger btn-block" id="remover-produto" type="submit">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    Remover Produto
-                                </button>
-                            </div>  
+                        <div class="col-xs-4">
+                            <button class="btn btn-lg btn-primary btn-block" id="atualizar-produto" type="submit">Atualizar Quantidade</button>
+                        </div>
                 </div>
             </form>
-        {% endfor %}
     </div>
 {% endblock %}
 

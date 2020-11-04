@@ -12,6 +12,18 @@ class UsuarioDAO:
     def __init__(self, db):
         self.__db = db_session
     
+    def get_usuarios(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE TODOS OS USUÁRIOS CADASTRADOS
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 01/11/2020 -
+            @versao: 1.0.0
+        '''
+        usuarios = self.__db.query(Usuario).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return usuarios
+    
     def get_id_usuario(self, id_usuario):
         '''
             METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO ID DO USUÁRIO
@@ -20,6 +32,18 @@ class UsuarioDAO:
             @versao: 1.0.0
         '''
         usuario = self.__db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return usuario
+    
+    def get_usuario_id(self, login):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DE UM USUÁRIO DO BANCO PELO ID DO USUÁRIO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 26/08/2020 -
+            @versao: 1.0.0
+        '''
+        usuario = self.__db.query(Usuario.id_usuario).filter(Usuario.login == login).first()
         self.__db.expunge_all()
         self.__db.close()
         return usuario
@@ -79,6 +103,28 @@ class UsuarioDAO:
         finally:
             self.__db.close()
         return 'Usuário cadastrado com sucesso'
+    
+    def update_infos_usuario(self, id_usuario, nome, sobrenome, email, senha, permissao):
+        '''
+            METODO QUE ATUALIZA AS INFORMAÇÕES DE UM DETERMINADO USUÁRIO NO SISTEMA
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 14/09/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(Usuario).filter(Usuario.id_usuario == id_usuario).update({Usuario.nome: nome, 
+                                                                                      Usuario.sobrenome: sobrenome, 
+                                                                                      Usuario.email: email,
+                                                                                      Usuario.senha: senha,
+                                                                                      Usuario.permissao: permissao})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar as informações do usuário")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Informações do usuário atualizadas com sucesso'
 
 
 class PermissaoDAO:
@@ -106,6 +152,12 @@ class PermissaoDAO:
         self.__db.expunge_all()
         self.__db.close()
         return permissoes
+    
+    def get_permissao(self, id_permissao):
+        permissao = self.__db.query(Permissao.permissao).filter(Permissao.id_permissao == id_permissao).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return permissao
     
     def get_id_permissao(self, permissao):
         id_permissao = self.__db.query(Permissao.id_permissao).filter(Permissao.permissao == permissao).first()
@@ -139,6 +191,17 @@ class TipoProdutoDAO:
         self.__db.expunge_all()
         self.__db.close()
         return tipos_produto
+    
+    def get_tipo_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA O TIPO DE UM PRODUTO REGISTRADO NO BANCO.
+            ESSE MÉTODO RECEBE O ID DO PRODUTO COMO PARÂMETRO.
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 03/10/2020 -
+            @versao: 1.0.0
+        '''
+        tipo_produto = self.__db.query(TipoProduto.tipo).first()
+        return tipo_produto
     
     def get_id_tipo(self, tipo):
         id_tipo = self.__db.query(TipoProduto.id).filter(TipoProduto.tipo == tipo).first()
@@ -237,7 +300,7 @@ class ProdutoDAO:
             @data: 12/09/2020 -
             @versao: 1.0.0
         '''
-        id_produto = self.__db.query(Produto).filter(Produto.nome == nome_produto).first()
+        id_produto = self.__db.query(Produto.id_produto).filter(Produto.nome == nome_produto).first()
         self.__db.expunge_all()
         self.__db.close()
         return id_produto.id_produto
@@ -287,6 +350,75 @@ class EstoqueDAO:
         finally:
             self.__db.close()
         return 'Estoque cadastrado com sucesso'
+    
+    def get_estoques(self):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 01/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return estoque
+    
+    def get_estoques_por_codigo_lote(self, codigo_lote):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE COM UM NÚMERO DE LOTE ESPECÍFICO, PASSADO
+            COMO PARÂMETRO DO MÉTODO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).filter(Estoque.codigo_lote == codigo_lote).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return estoque
+    
+    def get_estoques_por_loja(self, id_loja):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE DE UMA LOJA ESPECÍFICA, PASSADA
+            COMO PARÂMETRO DO MÉTODO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).filter(Estoque.id_loja == id_loja).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return estoque
+    
+    def get_estoques_por_id_estoque(self, id_estoque):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES LOTES CADASTRADOS
+            EM ESTOQUE, PASSANDO UM DETERMINADO ID DE ESTQOUE CADASTRADO
+            COMO PARÂMETRO DO MÉTODO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        estoque = self.__db.query(Estoque).filter(Estoque.id_estoque == id_estoque).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return estoque
+    
+    def get_id_estoque(self, codigo_lote):
+        '''
+            METODO QUE RETORNA O ID DO ESTOQUE.
+            ESSE MÉTODO RECEBE O CÓDIGO DO LOTE CADASTRADO NO SISTEMA
+            COMO PARÂMETRO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        codigo_lote = self.__db.query(Estoque.id_estoque).filter(Estoque.codigo_lote == codigo_lote).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return codigo_lote
     
     def get_codigo_lote(self, id_estoque):
         '''
@@ -358,6 +490,20 @@ class EstoqueProdutoDAO:
         self.__db.close()
         return estoque_produtos
 
+    def get_fk_ids_estoque_por_produto(self, id_produto):
+        '''
+            METODO QUE RETORNA OS IDS DOS ESTOQUES CADASTRADOS NOS LOTES,
+            DE ACORDO COM UM DETERMINADO PRODUTO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        ids_estoque = self.__db.query(EstoqueProduto.fk_id_estoque).filter(EstoqueProduto.fk_id_produto == id_produto).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return ids_estoque
+
     def get_quantidade_produtos(self, id_estoque):
         '''
             METODO QUE RETORNA AS QUANTIDADES DOS PRODUTOS CADASTRADOS
@@ -387,6 +533,25 @@ class EstoqueProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto(s) cadastrado(s) no estoque com sucesso'
+    
+    def update_quantidade_produto(self, nova_quantidade, id_produto, id_estoque):
+        '''
+            METODO QUE ATUALIZA A QUANTIDADE DE UM PRODUTO DE UM LOTE REGISTRADO
+            EM ESTOQUE NO BANCO
+           
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 30/10/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(EstoqueProduto).filter(EstoqueProduto.fk_id_estoque == id_estoque, EstoqueProduto.fk_id_produto == id_produto).update({EstoqueProduto.quantidade_produto: nova_quantidade})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar quantidade_produto")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'quantidade_produto atualizada com sucesso'
 
 
 class KitDAO:

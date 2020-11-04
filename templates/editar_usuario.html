@@ -5,11 +5,11 @@
 
 {{ super() }}
 
-<link rel="stylesheet"href="{{url_for('static', filename='css/index.css')}}">
+<link rel="stylesheet"href="{{url_for('static', filename='css/editar_usuario.css')}}">
 {% endblock %}
 
 {% block title %}
-    Dashboard - CSS
+    Editar Usuário - CSS
 {% endblock %}
 
 {% block content %}
@@ -23,15 +23,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url_for('dashboard') }}">CSS</a>
+            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_estoque') }}">CSS</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('form_gerenciamento_estoque') }}">Página Principal</a>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                         Estoque
                         <span class="caret"></span>
                     </a>
@@ -43,7 +43,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                         Produto
                         <span class="caret"></span>
                     </a>
@@ -54,7 +54,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                         Kit
                         <span class="caret"></span>
                     </a>
@@ -65,7 +65,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                         Loja
                         <span class="caret"></span>
                     </a>
@@ -76,13 +76,14 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                         Usuário
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
                             <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
+                            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_usuario') }}">Gerenciamento de Usuário</a>
                         </li>
                     </ul>
                 </li>
@@ -91,7 +92,7 @@
                 <button type="submit" class="btn btn-success">Sair</button>
             </form>
             <div class="dropdown notification-dropdown">
-                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('dashboard') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="glyphicon glyphicon-bell"></i><span class="counter counter-lg">{{ quantidade_notificacoes_usuario }}</span>&nbsp;&nbsp;     
                 </a>
                 <ul class="dropdown-menu notifications" role="menu">
@@ -115,9 +116,9 @@
                     {% endfor %}
                     </div>
                 </ul>
-                <a class="navbar-brand navbar-right" href="{{ url_for('dashboard') }}">Olá, {{ current_user.nome }}</a>
+                <a class="navbar-brand navbar-right" href="#">Olá, {{ current_user.nome }}</a>
             </div>
-      </div>
+        </div>
     </div>
 </nav>
 <div class="container mensagem">
@@ -134,7 +135,57 @@
     {% endif %}
     {% endwith %}
 </div>
-{% endblock content %}
+    <div class="container">
+        <h1>Editar Usuário</h1>
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('atualizar_usuario') }}" method="POST">
+                            <div class="container usuario">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="nome">Nome</label>
+                                        <input class="form-control" id="nome" name="nome" required type="text" value="{{ usuario['nome'] }}">   
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="sobrenome">sobrenome</label> 
+                                        <input class="form-control" id="sobrenome" name="sobrenome" required type="text" value="{{ usuario['sobrenome'] }}">   
+                                    </div>    
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="email">E-mail</label>
+                                        <input class="form-control" id="email" name="email" required type="email" value="{{ usuario['email'] }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="login">Login</label>
+                                        <input class="form-control" id="login" name="login" required type="text" value="{{ usuario['login'] }}" readonly=“true”>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="senha">Senha</label>
+                                        <input class="form-control" id="senha" name="senha" required type="password" value="{{ usuario['senha'] }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="permissao">Permissão</label> 
+                                            <select class="form-control" id="permissao" name="permissao">
+                                                {% for permissao in permissoes %}
+                                                    <option value="{{ usuario['permissao'] }}">{{ permissao }}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                </div>   
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-lg btn-primary btn-block" id="atualizar-produto" type="submit">Atualizar Usuário</button>
+                </div>
+            </form>
+    </div>
+{% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
