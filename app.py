@@ -336,6 +336,50 @@ def cadastrar_loja():
     return redirect(url_for('dashboard'))
 
 
+@app.route('/estoque/gerenciamento', methods=['GET'])
+@login_required
+def form_gerenciamento_estoque():
+    '''
+    ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE ESTOQUE (gerenciamento_estoque.html)
+    '''
+    produtos_estoque = estoque_produto_dao.get_estoque_produtos()
+    estoques = estoque_dao.get_estoques()
+    lista_lotes = []
+    count_lote = 1
+    estoque = {}
+    for lote in estoques:
+        estoque[f'lote{count_lote}'] = {}
+        estoque[f'lote{count_lote}']['codigo_lote'] = lote.codigo_lote
+        estoque[f'lote{count_lote}']['loja'] = lote.id_loja
+        estoque[f'lote{count_lote}']['produtos'] = {}
+        count_produto = 1
+        for produto in produtos_estoque:
+            if lote.id_estoque == produto.fk_id_estoque:
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}'] = {}
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['produto'] = produto_dao.get_produto(produto.fk_id_produto)[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto.fk_id_produto)[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['quantidade'] = produto.quantidade_produto
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['data_validade'] = produto.data_validade
+            count_produto += 1
+        count_lote += 1
+    return render_template('gerenciamento_estoque.html', estoque=estoque, notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
+
+
+@app.route('/editar_estoque', methods=['GET','POST'])
+@login_required
+def editar_estoque():
+    '''
+    ROTA QUE EXECUTA TODA A LÓGICA DE ATUALIZAÇÃO DA QUANTIDADE DE PRODUTOS EM ESTOQUE
+
+    @autor: Gabriel Oliveira Gonçalves -
+    @data: 05/10/2020 -
+    @URL: http://localhost:5000/editar_estoque - 
+    @versao: 1.0.0
+    '''
+    pass
+
+
 @app.route('/notificacoes', methods=['GET','POST'])
 @login_required
 def visualizar_notificacoes():
@@ -351,6 +395,7 @@ def visualizar_notificacoes():
     notificacao_usuario_dao.update_notificacao_visualizada(current_user.id_usuario)
     return render_template('notificacoes.html', notificacoes=notificacao_dao.get_notificacoes(),
                            quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
+
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 
 #A APP SEJA INICIALIZADA CASO IMPORTADA EM OUTRO MODULO
