@@ -1,7 +1,7 @@
 from database import Base
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, String, Integer, Date, ForeignKey, Numeric
+from sqlalchemy import Column, String, Integer, Date, ForeignKey, Numeric, DateTime
 
 class Usuario(Base, UserMixin):
     '''
@@ -22,6 +22,7 @@ class Usuario(Base, UserMixin):
     id_permissao = Column(Integer, ForeignKey('TPermissao.id_permissao'))
     permissao = relationship('Permissao', backref=backref('TUsuario'))
     loja = relationship("UsuarioLoja", backref=backref('TUsuario'))
+    usuario_notificacao = relationship('NotificacaoUsuario', backref=backref('Usuario'))
 
     def __init__(self, nome, sobrenome, email, login, senha, id_permissao):
         self.nome = nome
@@ -185,14 +186,16 @@ class EstoqueProduto(Base):
     fk_id_estoque = Column(Integer, ForeignKey('TEstoque.id_estoque'))
     fk_id_produto = Column(Integer, ForeignKey('TProduto.id_produto'))
     quantidade_produto = Column(Integer, nullable=False)
-    data_fabricacao = Column(Date, nullable=False)
+    total_produto = Column(Integer, nullable=False)
     data_validade = Column(Date, nullable=False)
+    estoque_produto = relationship('Notificacao', backref=backref('TEstoque_Produto'))
+    
 
-    def __init__(self, fk_id_estoque, fk_id_produto, quantidade_produto, data_fabricacao, data_validade):
+    def __init__(self, fk_id_estoque, fk_id_produto, quantidade_produto, total_produto, data_validade):
         self.fk_id_estoque = fk_id_estoque
         self.fk_id_produto = fk_id_produto
         self.quantidade_produto = quantidade_produto
-        self.data_fabricacao = data_fabricacao
+        self.total_produto = total_produto
         self.data_validade = data_validade
 
 
@@ -230,6 +233,7 @@ class Kit(Base):
     preco = Column(Numeric(5,2), nullable=False)
     data_validade = Column(Date, nullable=False)
     produtos = relationship('KitProduto', backref=backref('TKit'))
+    notificacao_kit = relationship('Notificacao', backref=backref('TKit'))
 
     def __init__(self, codigo, nome, quantidade, preco, data_validade):
         self.codigo = codigo
@@ -257,3 +261,76 @@ class KitProduto(Base):
     def __init__(self, fk_id_kit, fk_id_produto):
         self.fk_id_kit = fk_id_kit
         self.fk_id_produto = fk_id_produto
+
+
+class Notificacao(Base):
+    '''
+
+    CLASSE Notificacao - MAPEIA TABELA TNotificacao NO BANCO DE DADOS 
+  
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/10/2020 -
+    @versao: 1.0.0
+    '''
+    __tablename__ = 'TNotificacao'
+    id_notificacao = Column(Integer, primary_key=True, autoincrement=True)
+    assunto_notificacao = Column(String(50), nullable=False)
+    info_notificacao = Column(String(100), nullable=False)
+    data_notificacao = Column(DateTime, nullable=False)
+    fk_id_estoque_produto = Column(Integer, ForeignKey('TEstoque_Produto.id'))
+    fk_id_kit = Column(Integer, ForeignKey('TKit.id_kit'))
+    fk_id_tipo_notificacao = Column(Integer, ForeignKey('TTipoNotificacao.id'))
+    tipo_notificacao = relationship('TipoNotificacao', backref=backref('TNotificacao'))
+    notificacao_usuario = relationship('NotificacaoUsuario', backref=backref('TNotificacao'))
+    
+
+    def __init__(self, assunto_notificacao, info_notificacao, data_notificacao, fk_id_estoque_produto, fk_id_kit, fk_id_tipo_notificacao):
+        self.assunto_notificacao = assunto_notificacao
+        self.info_notificacao = info_notificacao
+        self.data_notificacao = data_notificacao
+        self.fk_id_estoque_produto = fk_id_estoque_produto
+        self.fk_id_kit = fk_id_kit
+        self.fk_id_tipo_notificacao = fk_id_tipo_notificacao
+
+
+class TipoNotificacao(Base):
+    '''
+
+    CLASSE TipoNotificacao - MAPEIA TABELA TTipo_Notificacao NO BANCO DE DADOS,
+    QUE RELACIONA AS NOTIFICAÇÕES DA TABELA TNotificacao COM OS TIPOS DE NOTIFICAÇÃO
+  
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/10/2020 -
+    @versao: 1.0.0
+    '''
+    __tablename__ = 'TTipoNotificacao'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    tipo = Column(String(30), nullable=False, unique=True)
+
+    def __init__(self, tipo):
+        self.tipo = tipo
+
+
+class NotificacaoUsuario(Base):
+    '''
+
+    CLASSE Notificacao - MAPEIA TABELA TNotificacao_Usuario NO BANCO DE DADOS,
+    QUE RELACIONA AS NOTIFICAÇÕES DA TABELA TNotificacao COM OS USUÁRIOS CADASTRADOS
+    NO TABELA TUsuario
+  
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 15/10/2020 -
+    @versao: 1.0.0
+    '''
+    __tablename__ = 'TNotificacaoUsuario'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fk_id_notificacao = Column(Integer, ForeignKey('TNotificacao.id_notificacao'))
+    fk_id_usuario = Column(Integer, ForeignKey('TUsuario.id_usuario')) 
+    visualizada = Column(Integer, nullable=False)
+    email_enviado = Column(Integer, nullable=False)
+
+    def __init__(self, fk_id_notificacao, fk_id_usuario, visualizada, email_enviado):
+        self.fk_id_notificacao = fk_id_notificacao
+        self.fk_id_usuario = fk_id_usuario
+        self.visualizada = visualizada
+        self.email_enviado = email_enviado

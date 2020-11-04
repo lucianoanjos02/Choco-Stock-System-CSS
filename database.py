@@ -5,10 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 # CONFIGURAÇÕES DE CONEXÃO COM O BANCO
 
 engine = create_engine('mysql+pymysql://adm:impacta2019ads@localhost:3306/CSS',
-                       echo=True,
+                       echo=False,
                        convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
+                                         expire_on_commit=False,
                                          bind=engine))
 
 Base = declarative_base()
