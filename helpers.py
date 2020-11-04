@@ -2,8 +2,15 @@ from flask_login import current_user
 import smtplib
 from email.message import EmailMessage
 from database import db_session
-from models import Notificacao, NotificacaoUsuario
-from dao import EstoqueProdutoDAO, EstoqueDAO, ProdutoDAO, UsuarioDAO, NotificacaoDAO, NotificacaoUsuarioDAO, KitDAO
+from models.notificacao import Notificacao
+from models.notificacao_usuario import NotificacaoUsuario
+from dao.estoque_produto_dao import EstoqueProdutoDAO
+from dao.estoque_dao import EstoqueDAO
+from dao.produto_dao import ProdutoDAO
+from dao.usuario_dao import UsuarioDAO
+from dao.notificacao_dao import NotificacaoDAO
+from dao.notificacao_usuario_dao import NotificacaoUsuarioDAO
+from dao.kit_dao import KitDAO
 from datetime import datetime, timedelta
 
 usuario_dao = UsuarioDAO(db_session)

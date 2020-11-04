@@ -2,9 +2,28 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_bootstrap import Bootstrap
 from database import db_session
-from forms import LoginForm, CadastroUsuarioForm
-from dao import UsuarioDAO, EstoqueDAO, EstoqueProdutoDAO, ProdutoDAO, LojaDAO, TipoProdutoDAO, KitDAO, KitProdutoDAO, PermissaoDAO, NotificacaoDAO, NotificacaoUsuarioDAO
-from models import Estoque, EstoqueProduto, Produto, Kit, KitProduto, Loja, Usuario
+from forms.login_form import LoginForm
+from forms.cadastro_usuario_form import CadastroUsuarioForm
+
+from dao.estoque_dao import EstoqueDAO
+from dao.estoque_produto_dao import EstoqueProdutoDAO
+from dao.produto_dao import ProdutoDAO
+from dao.tipo_produto_dao import TipoProdutoDAO
+from dao.permissao_dao import PermissaoDAO
+from dao.kit_dao import KitDAO
+from dao.kit_produto_dao import KitProdutoDAO
+from dao.loja_dao import LojaDAO
+from dao.usuario_dao import UsuarioDAO
+from dao.notificacao_dao import NotificacaoDAO
+from dao.notificacao_usuario_dao import NotificacaoUsuarioDAO
+
+from models.estoque import Estoque
+from models.estoque_produto import EstoqueProduto
+from models.produto import Produto
+from models.kit import Kit
+from models.kit_produto import KitProduto
+from models.loja import Loja
+from models.usuario import Usuario
 import os
 import binascii
 
@@ -464,7 +483,8 @@ def atualizar_quantiade():
         id_produto = produto_dao.get_id_produto(lote['produtos'][f'produto{count}']['nome'])
         estoque_produto_dao.update_quantidade_produto(lote['produtos'][f'produto{count}']['quantidade'], id_produto, id_estoque)
         count += 1
-        continue 
+        continue
+    flash("Quantidades do(s) Produto(s) atualizada(s) com sucesso!") 
     return redirect(url_for('form_gerenciamento_estoque'))
 
 
@@ -488,6 +508,7 @@ def atualizar_usuario():
                                      request.form['email'],
                                      request.form['senha'],
                                      permissao_usuario)
+    flash("Informações do usuário atualizada com sucesso!")
     return redirect(url_for('form_gerenciamento_estoque'))
 
 

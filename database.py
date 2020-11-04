@@ -17,7 +17,19 @@ Base.query = db_session.query_property()
 
 # METODO DE CRIAÇÃO DAS TABELAS MAPEADAS PELAS CLASSES NO BANCO
 
-# def init_db():
-#     import models
-#     Base.metadata.create_all(bind=engine)
-# init_db()
+def init_db():
+    from models.usuario import Usuario
+    from models.permissao import Permissao
+    from models.loja import Loja
+    from models.usuario_loja import UsuarioLoja
+    from models.estoque import Estoque
+    from models.produto import Produto
+    from models.estoque_produto import EstoqueProduto
+    from models.tipo_produto import TipoProduto
+    from models.kit import Kit
+    from models.kit_produto import KitProduto
+    from models.notificacao import Notificacao
+    from models.tipo_notificacao import TipoNotificacao
+    from models.notificacao_usuario import NotificacaoUsuario
+    Base.metadata.create_all(bind=engine)
+init_db()
