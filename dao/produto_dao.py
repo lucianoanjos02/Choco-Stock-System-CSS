@@ -25,6 +25,19 @@ class ProdutoDAO:
         self.__db.close()
         return produto
     
+    def get_produto_pesquisa(self, nome_produto):
+        '''
+            METODO QUE RETORNA AS INFORMAÇÕES DO PRODUTO REGISTRADAS NO BANCO.
+            ESSE MÉTODO UTILIZA O NOME DO PRODUTO COMO PARÂMETRO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 05/11/2020 -
+            @versao: 1.0.0
+        '''
+        produto = self.__db.query(Produto).filter(Produto.nome == nome_produto).first()
+        self.__db.expunge_all()
+        self.__db.close()
+        return produto
+    
     def get_produtos(self):
         '''
             METODO QUE RETORNA UMA LISTA DE NOMES DOS PRODUTOS REGISTRADAS NO BANCO
@@ -36,6 +49,21 @@ class ProdutoDAO:
         produtos = []
         for produto in dados_produtos:
             produtos.append(produto.nome)
+        self.__db.expunge_all()
+        self.__db.close()
+        return produtos
+    
+    def get_produtos_infos(self):
+        '''
+            METODO QUE RETORNA UMA LISTA DOS PRODUTOS REGISTRADAS NO BANCO
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 05/11/2020 -
+            @versao: 1.0.0
+        '''
+        dados_produtos = self.__db.query(Produto).all()
+        produtos = []
+        for produto in dados_produtos:
+            produtos.append(produto)
         self.__db.expunge_all()
         self.__db.close()
         return produtos
@@ -68,3 +96,22 @@ class ProdutoDAO:
         finally:
             self.__db.close()
         return 'Produto cadastrado com sucesso'
+    
+    def update_infos_produto(self, id_produto, produto, tipo):
+        '''
+            METODO QUE ATUALIZA AS INFORMAÇÕES DE UM DETERMINADO PRODUTO NO SISTEMA
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 05/11/2020 -
+            @versao: 1.0.0
+        '''
+        try:
+            self.__db.query(Produto).filter(Produto.id_produto == id_produto).update({Produto.nome: produto, 
+                                                                                      Produto.id_tipo: tipo})
+            self.__db.commit()
+        except:
+            print("Erro ao atualizar as informações do produto")
+            self.__db.rollback()
+        finally:
+            self.__db.close()
+        return 'Informações do produto atualizadas com sucesso'

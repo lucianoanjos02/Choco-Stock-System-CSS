@@ -1,0 +1,59 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/pesquisa_produto.css')}}">
+{% endblock %}
+
+{% block title %}
+    Pesquisa de Produtos - CSS
+{% endblock %}
+
+{% block content %}
+{% include "template_menu.html" %}
+</div>
+    <div class="container">
+        <h1>Gerenciamento de Produtos</h1>
+        <div class="container">
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('pesquisa_produto') }}" method="POST">
+                <label class="control-label" for="campo_pesquisa"></label>
+                <input class="form-control" id="campo_pesquisa" name="campo_pesquisa" required type="text" placeholder="Digite o nome de um Produto">
+                <div class="col-xs-4">
+                    <button class="btn btn-lg btn-primary btn-block" id="pesquisar-produto" type="submit">Pesquisar</button>
+                </div>
+            </form>
+        </div>
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('editar_produto') }}" method="POST">
+                <div class="container produtos" id="produtos">
+                            <div class="container info-produto">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="produto">Produto</label>
+                                        <input class="form-control" id="produto" name="produto" required type="text" value="{{ produto['produto'] }}" readonly=“true”>   
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="tipo">Tipo</label> 
+                                        <input class="form-control" id="tipo" name="tipo" required type="text" value="{{ produto['tipo'] }}" readonly=“true”>   
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="col-md-offset-10">
+                                <button class="btn btn-lg btn-danger btn-block" id="editar-produto" type="submit">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    Editar Produto
+                                </button>
+                            </div>
+                </div>
+            </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
+{{ super() }}
+{% endblock %}

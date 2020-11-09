@@ -13,127 +13,7 @@
 {% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-            aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_estoque') }}">CSS</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="{{ url_for('form_gerenciamento_estoque') }}">Página Principal</a>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Estoque
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_estoque') }}">Cadastro de Estoque</a>
-                            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_estoque') }}">Gerenciamento de Estoque</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Produto
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_produto') }}">Cadastro de Produto</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Kit
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_kit') }}">Cadastro de Kit</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Loja
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Usuário
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
-                            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_usuario') }}">Gerenciamento de Usuário</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
-                <button type="submit" class="btn btn-success">Sair</button>
-            </form>
-            <div class="dropdown notification-dropdown">
-                <a class="dropdown-toggle navbar-brand navbar-right notification-button" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="glyphicon glyphicon-bell"></i><span class="counter counter-lg">{{ quantidade_notificacoes_usuario }}</span>&nbsp;&nbsp;     
-                </a>
-                <ul class="dropdown-menu notifications" role="menu">
-                    <div class="notification-heading">
-                        <h4 class="menu-title">Notificações</h4>
-                        <h4 class="menu-title pull-right">
-                            <a class="menu-title" href="{{ url_for('visualizar_notificacoes') }}">Ver tudo</a> 
-                        <i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
-                    {% for notificacao in notificacoes %}
-                        <li class="divider"></li>
-                        <div class="notification-wrapper">
-                            <a class="content" href="#">
-                                <div class="notification-item">
-                                    <h4 class="item-title">{{ notificacao.assunto_notificacao }}</h4>
-                                    <p class="item-info">{{ notificacao.info_notificacao }}</p>
-                                    <p class="item-info">Data/Horário: {{ notificacao.data_notificacao }}</p>
-                                </div>
-                            </a>
-                        </div>
-                        <li class="divider"></li>
-                    {% endfor %}
-                    </div>
-                </ul>
-                <a class="navbar-brand navbar-right" href="#">Olá, {{ current_user.nome }}</a>
-            </div>
-        </div>
-    </div>
-</nav>
-<div class="container mensagem">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-warning" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="false">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-    {% endif %}
-    {% endwith %}
+{% include "template_menu.html" %}
 </div>
     <div class="container">
         <form name="formEstoque" class="form-horizontal" action="{{ url_for('cadastrar_estoque') }}" method="POST">
@@ -146,7 +26,7 @@
                 <label class="control-label" for="loja">Loja</label> 
                 <select class="form-control" id="loja" name="loja">
                     {% for loja in lojas %}
-                        <option value={{ loja }}>{{ loja }}</option>
+                        <option value="{{ loja }}">{{ loja }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -157,7 +37,7 @@
                             <label class="control-label" for="produto1">Produto</label> 
                             <select class="form-control produto" id="produto1" name="produto1">
                                 {% for produto in produtos %}
-                                    <option value={{ produto }}>{{ produto }}</option>
+                                    <option value="{{ produto }}">{{ produto }}</option>
                                 {% endfor %}
                             </select>
                         </div>    

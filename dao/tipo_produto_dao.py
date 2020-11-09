@@ -27,7 +27,7 @@ class TipoProdutoDAO:
         self.__db.close()
         return tipos_produto
     
-    def get_tipo_produto(self, id_produto):
+    def get_tipo_produto(self, id_tipo):
         '''
             METODO QUE RETORNA O TIPO DE UM PRODUTO REGISTRADO NO BANCO.
             ESSE MÉTODO RECEBE O ID DO PRODUTO COMO PARÂMETRO.
@@ -35,7 +35,7 @@ class TipoProdutoDAO:
             @data: 03/10/2020 -
             @versao: 1.0.0
         '''
-        tipo_produto = self.__db.query(TipoProduto.tipo).first()
+        tipo_produto = self.__db.query(TipoProduto.tipo).filter(TipoProduto.id == id_tipo).first()
         return tipo_produto
     
     def get_id_tipo(self, tipo):

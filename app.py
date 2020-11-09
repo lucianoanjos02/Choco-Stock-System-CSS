@@ -273,10 +273,8 @@ def cadastrar_produto():
     info_produto = []
     for field in request.form.values():
         info_produto.append(field)
-    print(info_produto)
     produto = Produto(info_produto[0],
-                      info_produto[1],
-                      tipo_produto_dao.get_id_tipo(info_produto[2])[0])
+                      tipo_produto_dao.get_id_tipo(info_produto[1])[0])
     produto_dao.cadastrar_produto(produto)
     flash("Produto cadastrado com sucesso!")
     return redirect(url_for('form_gerenciamento_estoque'))
@@ -516,7 +514,7 @@ def atualizar_usuario():
 @login_required
 def pesquisa_estoque():
     '''
-    ROTA QUE EXECUTA E TRAZ A VIEW DA PESQUISA DE LOTES EM ESTOQUE POR CÓDIGO DO LOTE, PRODUTO E LOJA
+    ROTA QUE EXECUTA E TRAZ A VIEW DA PESQUISA DE LOTES EM ESTOQUE POR CÓDIGO DO LOTE E LOJA
 
     @autor: luciano Gomes Vieira dos Anjos -
     @data: 30/10/2020 -
@@ -526,30 +524,6 @@ def pesquisa_estoque():
     if request.form['filtro_pesquisa'] == 'Código Lote':
         estoques = estoque_dao.get_estoques_por_codigo_lote(request.form['campo_pesquisa'])
         produtos_estoque = estoque_produto_dao.get_estoque_produtos()
-    elif request.form['filtro_pesquisa'] == 'Produto':
-        id_produto = produto_dao.get_id_produto(request.form['campo_pesquisa'])
-        ids_estoque = estoque_produto_dao.get_fk_ids_estoque_por_produto(id_produto)
-        produtos_estoque = estoque_produto_dao.get_estoque_produtos()
-        for id_estoque in ids_estoque:
-            estoques = estoque_dao.get_estoques_por_id_estoque(id_estoque[0])
-            lista_lotes = []
-            count_lote = 1
-            estoque = {}
-            for lote in estoques:
-                estoque[f'lote{count_lote}'] = {}
-                estoque[f'lote{count_lote}']['codigo_lote'] = lote.codigo_lote
-                estoque[f'lote{count_lote}']['loja'] = lote.id_loja
-                estoque[f'lote{count_lote}']['produtos'] = {}
-                count_produto = 1
-                for produto in produtos_estoque:
-                    if lote.id_estoque == produto.fk_id_estoque:
-                        estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}'] = {}
-                        estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['produto'] = produto_dao.get_produto(produto.fk_id_produto)[0]
-                        estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto.fk_id_produto)[0]
-                        estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['quantidade'] = produto.quantidade_produto
-                        estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['data_validade'] = produto.data_validade
-                    count_produto += 1
-                count_lote += 1
     else:
         estoques = estoque_dao.get_estoques_por_loja(request.form['campo_pesquisa'])
         produtos_estoque = estoque_produto_dao.get_estoque_produtos()
@@ -591,6 +565,93 @@ def visualizar_notificacoes():
     notificacao_usuario_dao.update_notificacao_visualizada(current_user.id_usuario)
     return render_template('notificacoes.html', notificacoes=notificacao_dao.get_notificacoes(),
                            quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
+
+
+@app.route('/produtos/gerenciamento', methods=['GET'])
+@login_required
+def form_gerenciamento_produto():
+    '''
+    ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE PRODUTOS (gerenciamento_produtos.html)
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/produtos/gerenciamento - 
+    @versao: 1.0.0
+    '''
+    info_produtos = produto_dao.get_produtos_infos()
+    count_produto = 1
+    produtos = {}
+    for produto in info_produtos:
+        produtos[f'produto{count_produto}'] = {}
+        produtos[f'produto{count_produto}']['produto'] = produto.nome
+        produtos[f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto.id_tipo)[0]
+        count_produto += 1
+    return render_template('gerenciamento_produtos.html', produtos=produtos, notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
+
+
+@app.route('/produtos/gerenciamento/editar', methods=['GET', 'POST'])
+@login_required
+def editar_produto():
+    '''
+    ROTA QUE TRAZ A VIEW DE EDIÇÃO DE UM PRODUTO NO SISTEMA
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/produtos/gerenciamento/editar - 
+    @versao: 1.0.0
+    '''
+    info_produto = []
+    for field in request.form.values():
+        info_produto.append(field)
+    produto = {}
+    produto['produto'] = info_produto[0]
+    produto['tipo'] = info_produto[1]
+    return render_template('editar_produto.html', notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario),
+                           produto=produto,
+                           tipos_produto=tipo_produto_dao.get_tipos_produto())
+
+
+@app.route('/atualizar_produto', methods=['POST'])
+@login_required
+def atualizar_produto():
+    '''
+    ROTA QUE EXECUTA TODA A DE ATUALIZAÇÃO DAS INFORMAÇÕES
+    DE UM PRODUTO CADASTRADO NO SISTEMA
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/atualizar_produto - 
+    @versao: 1.0.0
+    '''
+    id_produto = produto_dao.get_id_produto(request.form['produto-original'])
+    tipo = request.form['tipo']
+    produto_dao.update_infos_produto(id_produto,
+                                     request.form['produto'],
+                                     tipo_produto_dao.get_id_tipo(tipo)[0])
+    flash("Informações do produto atualizadas com sucesso!")
+    return redirect(url_for('form_gerenciamento_produto'))
+
+
+@app.route('/produtos/gerenciamento/pesquisa', methods=['GET', 'POST'])
+@login_required
+def pesquisa_produto():
+    '''
+    ROTA QUE EXECUTA E TRAZ A VIEW DA PESQUISA DE LOTES EM ESTOQUE POR CÓDIGO DO LOTE E LOJA
+
+    @autor: luciano Gomes Vieira dos Anjos -
+    @data: 30/10/2020 -
+    @URL: http://localhost:5000/estoque/gerenciamento/pesquisa - 
+    @versao: 1.0.0
+    '''
+    info_produto = produto_dao.get_produto_pesquisa(request.form['campo_pesquisa'])
+    produto = {}
+    produto['produto'] = info_produto.nome
+    produto['tipo'] = tipo_produto_dao.get_tipo_produto(info_produto.id_tipo)[0]
+    return render_template('pesquisa_produto.html', notificacoes=notificacao_dao.get_notificacoes(),
+                            quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario),
+                            produto=produto)
 
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 

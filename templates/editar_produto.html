@@ -1,0 +1,50 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/editar_produto.css')}}">
+{% endblock %}
+
+{% block title %}
+    Editar Produto - CSS
+{% endblock %}
+
+{% block content %}
+{% include "template_menu.html" %}
+</div>
+    <div class="container">
+        <h1>Editar Produto</h1>
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('atualizar_produto') }}" method="POST">
+                            <div class="container produto">
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="produto">Produto</label>
+                                        <input class="form-control" id="produto" name="produto" required type="text" value="{{ produto['produto'] }}">
+                                        <input class="form-control" id="produto-original" name="produto-original" required type="hidden" value="{{ produto['produto'] }}">   
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group required">
+                                        <label class="control-label" for="tipo">Tipo</label> 
+                                            <select class="form-control" id="tipo" name="tipo">
+                                                {% for tipo in tipos_produto %}
+                                                    <option value="{{ tipo }}">{{ tipo }}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                </div>   
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-lg btn-primary btn-block" id="atualizar-produto" type="submit">Atualizar Produto</button>
+                </div>
+            </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
+{{ super() }}
+{% endblock %}
