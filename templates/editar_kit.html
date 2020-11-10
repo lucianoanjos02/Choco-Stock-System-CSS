@@ -1,0 +1,70 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block styles %}
+
+{{ super() }}
+
+<link rel="stylesheet"href="{{url_for('static', filename='css/editar_kit.css')}}">
+{% endblock %}
+
+{% block title %}
+    Editar Kit - CSS
+{% endblock %}
+
+{% block content %}
+{% include "template_menu.html" %}
+</div>
+    <div class="container">
+        <h1>Editar Kit</h1>
+            <form name="formEstoque" class="form-horizontal" action="{{ url_for('atualizar_kit') }}" method="POST">
+                <div class="container kit" id="kits">
+                    <div class="container info-kit" id="info-kit">
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label class="control-label" for="codigo_kit">Código</label> 
+                                <input class="form-control" id="codigo_kit" name="codigo_kit" required type="text" value="{{ kit['codigo'] }}" readonly=“true”>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label class="control-label" for="nome_kit">Nome</label>
+                                <input class="form-control" id="nome_kit" name="nome_kit" required type="text" value="{{ kit['nome'] }}" readonly=“true”> 
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label class="control-label" for="quantidade">Quantidade</label>
+                                <input class="form-control" id="quantidade" name="quantidade" required type="number" min="0" max="{{ kit['quantidade'] }}" value="{{ kit['quantidade'] }}"> 
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label class="control-label" for="data_validade">Data de Validade</label>
+                                <input class="form-control" id="data_validade" name="data_validade" required type="text" value="{{ kit['data_validade'] }}" readonly=“true”> 
+                            </div>
+                        </div>
+                    </div>
+                    {% set count_prod = namespace(value=0) %}
+                            <div class="container produtos">
+                                <div class="col-md-12">
+                                        <div class="form-group required">
+                                            <label class="control-label" for="produto{{ count_prod.value }}">Produtos</label>
+                                            {% for produto in kit['produtos'].values() %}
+                                                <input class="form-control" id="produto{{ count_prod.value }}" name="produto{{ count_prod.value }}" required type="text" value="{{ produto }}" readonly=“true”>
+                                                {% set count_prod.value = count_prod.value + 1 %}  
+                                            {% endfor %} 
+                                        </div>  
+                                </div>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-lg btn-primary btn-block" id="atualizar-produto" type="submit">Atualizar Quantidade</button>
+                </div>
+            </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notificacoes.js') }}"></script>
+{{ super() }}
+{% endblock %}

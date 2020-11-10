@@ -108,9 +108,11 @@ def form_gerenciamento_estoque():
         count_produto = 1
         for produto in produtos_estoque:
             if lote.id_estoque == produto.fk_id_estoque:
+               produto_nome = produto_dao.get_produto(produto.fk_id_produto)
+               produto_info = produto_dao.get_produto_pesquisa(produto_nome[0])
                estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}'] = {}
-               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['produto'] = produto_dao.get_produto(produto.fk_id_produto)[0]
-               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto.fk_id_produto)[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['produto'] = produto_nome[0]
+               estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['tipo'] = tipo_produto_dao.get_tipo_produto(produto_info.id_tipo)[0]
                estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['quantidade'] = produto.quantidade_produto
                estoque[f'lote{count_lote}']['produtos'][f'produto{count_produto}']['data_validade'] = produto.data_validade
             count_produto += 1
@@ -652,6 +654,116 @@ def pesquisa_produto():
     return render_template('pesquisa_produto.html', notificacoes=notificacao_dao.get_notificacoes(),
                             quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario),
                             produto=produto)
+
+
+@app.route('/kit/gerenciamento', methods=['GET'])
+@login_required
+def form_gerenciamento_kit():
+    '''
+    ROTA QUE RETORNA A VIEW DE GERENCIAMENTO DE KITS (gerenciamento_kit.html)
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/produtos/gerenciamento - 
+    @versao: 1.0.0
+    '''
+    info_kit = kit_dao.get_kits()
+    count_kit = 1
+    kits = {}
+    for kit in info_kit:
+        kits[f'kit{count_kit}'] = {}
+        kits[f'kit{count_kit}'][f'produtos'] = {}
+        kits[f'kit{count_kit}']['codigo'] = kit.codigo
+        kits[f'kit{count_kit}']['nome'] = kit.nome
+        kits[f'kit{count_kit}']['quantidade'] = kit.quantidade
+        kits[f'kit{count_kit}']['data_validade'] = kit.data_validade
+        produtos_kit = kit_produto_dao.get_kit_produtos(kit.id_kit)
+        count_produto = 1
+        for produto_id in produtos_kit:
+            kits[f'kit{count_kit}'][f'produtos'][f'produto{count_produto}'] = produto_dao.get_produto(produto_id[0])[0]
+            count_produto += 1
+        count_kit += 1
+    return render_template('gerenciamento_kit.html', kits=kits, notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario))
+
+
+@app.route('/kit/gerenciamento/pesquisa', methods=['GET', 'POST'])
+@login_required
+def pesquisa_kit():
+    '''
+    ROTA QUE EXECUTA E TRAZ A VIEW DA PESQUISA DE KITS EM ESTOQUE POR CÓDIGO E NOME
+
+    @autor: luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/kit/gerenciamento/pesquisa - 
+    @versao: 1.0.0
+    '''
+    if request.form['filtro_pesquisa'] == 'Código':
+       info_kit = kit_dao.get_pesquisa_codigo(request.form['campo_pesquisa'])
+       produtos_kit = kit_produto_dao.get_kit_produtos(info_kit.id_kit)
+    else:
+        info_kit = kit_dao.get_pesquisa_nome(request.form['campo_pesquisa'])
+        produtos_kit = kit_produto_dao.get_kit_produtos(info_kit.id_kit)
+    kit = {}
+    kit['codigo'] = info_kit.codigo
+    kit['nome'] = info_kit.nome
+    kit['quantidade'] = info_kit.quantidade
+    kit['data_validade'] = info_kit.data_validade
+    kit['produtos'] = {}
+    count_produto = 1
+    for produto_id in produtos_kit:
+         kit['produtos'][f'produto{count_produto}'] = produto_dao.get_produto(produto_id[0])[0]
+         count_produto += 1
+    return render_template('pesquisa_kit.html', notificacoes=notificacao_dao.get_notificacoes(),
+                            quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario),
+                            kit=kit)
+
+
+@app.route('/kit/gerenciamento/editar', methods=['GET', 'POST'])
+@login_required
+def editar_kit():
+    '''
+    ROTA QUE TRAZ A VIEW DE EDIÇÃO DE UM KIT NO SISTEMA
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/kit/gerenciamento/editar - 
+    @versao: 1.0.0
+    '''
+    info_kit = kit_dao.get_pesquisa_codigo(request.form['codigo_kit'])
+    produtos_kit = kit_produto_dao.get_kit_produtos(info_kit.id_kit)
+    kit = {}
+    kit['codigo'] = info_kit.codigo
+    kit['nome'] = info_kit.nome
+    kit['quantidade'] = info_kit.quantidade
+    kit['data_validade'] = info_kit.data_validade
+    kit['produtos'] = {}
+    count_produto = 1
+    for produto_id in produtos_kit:
+         kit['produtos'][f'produto{count_produto}'] = produto_dao.get_produto(produto_id[0])[0]
+         count_produto += 1
+    return render_template('editar_kit.html', notificacoes=notificacao_dao.get_notificacoes(),
+                           quantidade_notificacoes_usuario=notificacao_usuario_dao.get_quantidade_notificacoes_usuario(current_user.id_usuario),
+                           kit=kit)
+
+
+@app.route('/atualizar_kit', methods=['POST'])
+@login_required
+def atualizar_kit():
+    '''
+    ROTA QUE EXECUTA TODA A DE ATUALIZAÇÃO DA QUANTIDADE
+    DE UM KIT CADASTRADO NO SISTEMA
+
+    @autor: Luciano Gomes Vieira dos Anjos -
+    @data: 05/11/2020 -
+    @URL: http://localhost:5000/atualizar_produto - 
+    @versao: 1.0.0
+    '''
+    kit = kit_dao.get_pesquisa_codigo(request.form['codigo_kit'])
+    quantidade = request.form['quantidade']
+    kit_dao.update_quantidade_produto(kit.id_kit, quantidade)
+    flash("Quantidade do kit atualizada com sucesso!")
+    return redirect(url_for('form_gerenciamento_kit'))
 
 
 #BLOCO DE INICIALIZAÇÃO DA APLICAÇÃO IMPEDE QUE 

@@ -16,14 +16,12 @@ class Kit(Base):
     codigo = Column(String(20), unique=True, nullable=False)
     nome = Column(String(100), nullable=False)
     quantidade = Column(Integer, nullable=False)
-    preco = Column(Numeric(5,2), nullable=False)
     data_validade = Column(Date, nullable=False)
     produtos = relationship('KitProduto', backref=backref('TKit'))
     notificacao_kit = relationship('Notificacao', backref=backref('TKit'))
 
-    def __init__(self, codigo, nome, quantidade, preco, data_validade):
+    def __init__(self, codigo, nome, quantidade, data_validade):
         self.codigo = codigo
         self.nome = nome
         self.quantidade = quantidade
-        self.preco = preco
         self.data_validade = data_validade

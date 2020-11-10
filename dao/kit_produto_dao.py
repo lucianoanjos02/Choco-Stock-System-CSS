@@ -11,6 +11,21 @@ class KitProdutoDAO:
     '''
     def __init__(self, db):
         self.__db = db_session
+    
+    def get_kit_produtos(self, id_kit):
+        '''
+            METODO QUE RETORNA OS PRODUTOS CADASTRADOS
+            EM UM DETERMINADO KIT, PASSANDO O ID DO KIT 
+            COMO PARÂMETRO
+
+            @autor: Luciano Gomes Vieira dos Anjos -
+            @data: 05/11/2020 -
+            @versao: 1.0.0
+        '''
+        produtos_kit = self.__db.query(KitProduto.fk_id_produto).filter(KitProduto.fk_id_kit == id_kit).all()
+        self.__db.expunge_all()
+        self.__db.close()
+        return produtos_kit
 
     def cadastrar_kit_produtos(self, kit_produto):
         '''
