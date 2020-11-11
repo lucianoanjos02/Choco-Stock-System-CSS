@@ -13,7 +13,7 @@ class NotificacaoUsuario(Base):
     @data: 15/10/2020 -
     @versao: 1.0.0
     '''
-    __tablename__ = 'TNotificacaoUsuario'
+    __tablename__ = 'TNotificacao_Usuario'
     id = Column(Integer, primary_key=True, autoincrement=True)
     fk_id_notificacao = Column(Integer, ForeignKey('TNotificacao.id_notificacao'))
     fk_id_usuario = Column(Integer, ForeignKey('TUsuario.id_usuario')) 

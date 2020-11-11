@@ -204,7 +204,7 @@ def notificacao_email_data_validade():
         data_validade = notificacao.info_notificacao.split()
         msg = EmailMessage()
         msg['Subject'] = f'{notificacao.assunto_notificacao} - LOTE {estoque_dao.get_codigo_lote(notificacao.fk_id_estoque_produto)[0]}'
-        msg['From'] = 'lucianogvda02@gmail.com'
+        msg['From'] = 'alertas.estoque.css@gmail.com'
         msg['To'] = ', '.join(usuario_dao.get_emails())
         msg.set_content(f"{notificacao.info_notificacao}")
 
@@ -215,7 +215,7 @@ def notificacao_email_data_validade():
                 smtp.starttls()
                 smtp.ehlo()
 
-                smtp.login('lucianogvda02@gmail.com', 'kax7iktv')
+                smtp.login('alertas.estoque.css@gmail.com', 'adsimpacta@2019')
                 smtp.send_message(msg)
                 smtp.quit()
 
@@ -243,7 +243,7 @@ def notificacao_email_data_validade_kit():
         info_notificacao = notificacao.info_notificacao.split()
         msg = EmailMessage()
         msg['Subject'] = f'{notificacao.assunto_notificacao} - CÓDIGO {kit_dao.get_codigo_kit(notificacao.fk_id_kit)[0]}'
-        msg['From'] = 'lucianogvda02@gmail.com'
+        msg['From'] = 'alertas.estoque.css@gmail.com'
         msg['To'] = ', '.join(usuario_dao.get_emails())
         msg.set_content(f"{notificacao.info_notificacao}")
 
@@ -254,7 +254,7 @@ def notificacao_email_data_validade_kit():
                 smtp.starttls()
                 smtp.ehlo()
 
-                smtp.login('lucianogvda02@gmail.com', 'kax7iktv')
+                smtp.login('alertas.estoque.css@gmail.com', 'adsimpacta@2019')
                 smtp.send_message(msg)
                 smtp.quit()
 
@@ -282,7 +282,7 @@ def notificacao_email_quantidade():
         data_validade = notificacao.info_notificacao.split()
         msg = EmailMessage()
         msg['Subject'] = f'{notificacao.assunto_notificacao} - LOTE {estoque_dao.get_codigo_lote(notificacao.fk_id_estoque_produto)[0]}'
-        msg['From'] = 'lucianogvda02@gmail.com'
+        msg['From'] = 'alertas.estoque.css@gmail.com'
         msg['To'] = ', '.join(usuario_dao.get_emails())
         msg.set_content(f"{notificacao.info_notificacao}")
 
@@ -293,7 +293,7 @@ def notificacao_email_quantidade():
                 smtp.starttls()
                 smtp.ehlo()
 
-                smtp.login('lucianogvda02@gmail.com', 'kax7iktv')
+                smtp.login('alertas.estoque.css@gmail.com', 'adsimpacta@2019')
                 smtp.send_message(msg)
                 smtp.quit()
 

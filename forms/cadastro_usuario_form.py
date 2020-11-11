@@ -18,5 +18,5 @@ class CadastroUsuarioForm(FlaskForm):
     sobrenome = StringField('Sobrenome', validators=[InputRequired(), Length(max=25)])
     email = StringField('Email', validators=[InputRequired(), Email(message="E-mail Inválido"), Length(max=150)])
     login = StringField('Login', validators=[InputRequired(), Length(max=20)])
-    senha = StringField('Senha', validators=[InputRequired(), Length(max=10)])
+    senha = PasswordField('Senha', validators=[InputRequired(), Length(max=10)])
     permissao = SelectField('Permissão', choices=permissao_dao.get_permissoes()) 

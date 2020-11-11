@@ -51,29 +51,31 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Loja
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
-                        Usuário
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
-                            <a class="navbar-brand" href="{{ url_for('form_gerenciamento_usuario') }}">Gerenciamento de Usuário</a>
-                        </li>
-                    </ul>
-                </li>
+                {% if current_user.id_permissao == 1 %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Loja
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('form_cadastro_loja') }}">Cadastro de Loja</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('form_gerenciamento_estoque') }}" role="button" aria-haspopup="true" aria-expanded="false">
+                            Usuário
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="navbar-brand" href="{{ url_for('cadastro_usuario') }}">Cadastro de Usuário</a>
+                                <a class="navbar-brand" href="{{ url_for('form_gerenciamento_usuario') }}">Gerenciamento de Usuário</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
             <form class="navbar-form navbar-right" action="{{ url_for('logout') }}" method="POST">
                 <button type="submit" class="btn btn-success">Sair</button>
